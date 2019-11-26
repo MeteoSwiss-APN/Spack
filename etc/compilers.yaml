@@ -1,0 +1,172 @@
+compilers:
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags:
+      fflags: -D__CRAY_FORTRAN__
+    modules:
+    - PrgEnv-cray
+    - cray-libsci
+    - cce/8.6.0
+    operating_system: rhel7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: cce@8.6.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-cray
+    - gcc/6.1.0
+    operating_system: rhel7
+    paths:
+      cc: gcc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: cce@8.5.9c
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-cray
+    - cce/8.5.8
+    operating_system: rhel7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: cce@8.5.8
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/4.9.1
+    operating_system: rhel7
+    paths:
+      cc: gcc
+      cxx: g++
+      f77: gfortran
+      fc: gfortran
+    spec: gcc@4.9.1
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    operating_system: rhel7
+    paths:
+      cc: gcc
+      cxx: g++
+      f77: gfortran
+      fc: gfortran
+    spec: gcc@5.4.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/6.1.0
+    operating_system: rhel7
+    paths:
+      cc: gcc
+      cxx: g++
+      f77: gfortran
+      fc: gfortran
+    spec: gcc@6.1.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-intel
+    - intel/18.0.2.199
+    - cray-mpich
+    operating_system: cnl6
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: intel@18.0.2
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/6.2.0
+    operating_system: cnl6
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: gcc@6.2.0
+    target: sandybridge
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/6.2.0
+    - cray-mpich
+    operating_system: cnl6
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: gcc@6.2.0
+    target: haswell
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/5.3.0
+    - cray-mpich
+    operating_system: cnl6
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: gcc@5.3.0
+    target: haswell 
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-cray
+    - cce/8.7.3
+    - cray-mpich
+    - craype-accel-nvidia60
+    operating_system: cnl6
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: cce@8.7.3
+    target: haswell
