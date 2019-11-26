@@ -1,0 +1,17 @@
+diff --git a/cosmo/ACC/Makefile b/cosmo/ACC/Makefile
+index 6303dde..bad212b 100644
+--- a/cosmo/ACC/Makefile
++++ b/cosmo/ACC/Makefile
+@@ -258,9 +258,12 @@ endif
+ clean :
+ 	-rm -f $(DEPF) $(DEPF).old $(OBJDIR)/*
+ 
++INSTALL_PREFIX=
+ $(ROOT)/$(TARGET) : $(OBJ)
+ 	@echo "linking $@"
+ 	@$(LD) $(LFLAGS) $(FFLAGS1) $(INC) $(OBJ) $(LIB) -o $@
++	mkdir -p $(INSTALL_PREFIX)
++	cp $@ $(INSTALL_PREFIX)
+ 
+ ### Suffix Rules ###########################
+ 
