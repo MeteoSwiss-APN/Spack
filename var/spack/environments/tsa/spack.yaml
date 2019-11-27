@@ -1,0 +1,114 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs: [libgrib1, jasper, grib-api, ncurses, ncurses%gcc, cmake%cce]
+  view: true
+  packages:
+    cmake:
+      modules:
+        cmake@3.13.4 arch=cray-cnl6-haswell: cmake/3.14.5
+      buildable: true
+      version: []
+      target: []
+      providers: {}
+      compiler: []
+    boost:
+      paths:
+        boost@1.71.9%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_71_0/
+        boost@1.67.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_67_0/
+        boost@1.66.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_66_0/
+        boost@1.65.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_65_0/
+        boost@1.64.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_64_0/
+        boost@1.67.0%intel arch=cray-cnl6-mic_knl: /project/c14/install/tave/boost/boost_1_67_0/
+        boost@1.67.0%gcc arch=cray-cnl6-haswell: /project/c14/install/daint/boost/boost_1_67_0/
+      buildable: true
+      version: []
+      target: []
+      providers: {}
+      modules: {}
+      compiler: []
+    cuda:
+      modules:
+        cuda@10.0 : cuda10.0/toolkit/10.0.130
+      buildable: true
+      version: []
+      target: []
+      providers: {}
+      paths: {}
+      compiler: []
+  compilers:
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags:
+        fflags: -D__CRAY_FORTRAN__
+      modules:
+      - cce/8.7.7
+      operating_system: rhel7
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      spec: cce@8.7.7
+      target: any
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags:
+        fflags: -D__CRAY_FORTRAN__
+      modules:
+      - cce/8.7.10
+      operating_system: rhel7
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      spec: cce@8.7.10
+      target: any  
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags: {}
+      modules:
+      - gcc/6.1.0
+      operating_system: rhel7
+      paths:
+        cc: gcc
+        cxx: g++
+        f77: gfortran
+        fc: gfortran
+      spec: gcc@6.1.0
+      target: any
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags: {}
+      modules:
+      - gcc/7.2.0
+      operating_system: rhel7
+      paths:
+        cc: gcc
+        cxx: g++
+        f77: gfortran
+        fc: gfortran
+      spec: gcc@7.2.0
+      target: any
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags: {}
+      modules:
+      - gcc/8.3.0
+      operating_system: rhel7
+      paths:
+        cc: gcc
+        cxx: g++
+        f77: gfortran
+        fc: gfortran
+      spec: gcc@6.1.0
+      target: any
