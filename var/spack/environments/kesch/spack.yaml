@@ -4,77 +4,138 @@
 # configuration settings.
 spack:
   # add package specs to the `specs` list
-  specs: [libgrib1, jasper, grib-api, ncurses]
+  specs: [libgrib1, jasper, grib-api, ncurses, ncurses%gcc, cmake%cce]
   view: true
   packages:
-      permissions:
-          write: group
-          group: s83
-      jdk:
-          paths:
-              jdk@8.0_121 arch=linux-rhel7-x86_64: /apps/escha/UES/jenkins/RH7.3-gnu_PE17.02/easybuild/software/java/1.8.0_121
-      ant:
-          paths:
-              ant@1.9.9 arch=linux-rhel7-x86_64: /project/c14/install/kesch/ant/apache-ant-1.9.9/
-              ant@1.10.2 arch=linux-rhel7-x86_64: /project/c14/install/kesch/ant/apache-ant-1.10.2/
-      cmake:
-          paths:
-              cmake@3.9.1%cce arch=linux-rhel7-x86_64: /apps/escha/UES/RH7.3_generic/easybuild/software/cmake/3.9.1/
-              cmake@3.8.1%intel arch=cray-cnl6-mic_knl: /apps/common/UES/modulefiles/CMake/3.8.1/
-          modules:
-              cmake@3.13.4 arch=cray-cnl6-haswell: CMake/3.13.4
-
-      boost:
-          paths:
-              boost@1.71.9%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_71_0/
-              boost@1.67.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_67_0/
-              boost@1.66.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_66_0/
-              boost@1.65.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_65_0/
-              boost@1.64.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_64_0/
-              boost@1.67.0%intel arch=cray-cnl6-mic_knl: /project/c14/install/tave/boost/boost_1_67_0/
-              boost@1.67.0%gcc arch=cray-cnl6-haswell: /project/c14/install/daint/boost/boost_1_67_0/
-
-      cuda:
-          modules:
-              cuda@8.0.61 arch=cray-cnl6-haswell: cudatoolkit/8.0.61
-              cuda@9.2.148: cudatoolkit/9.2.148
-
-      mpi:
-          modules:
-              mpi%cce: mvapich2_cce/2.2rc1.0.3_cuda80
-              mpi@2.3%gnu: mvapich2gdr_gnu/2.3_cuda_9.2_gcc54
-              mpi@2.2%gnu: mvapich2gdr_gnu/2.2_cuda_8.0
-
-  #    gribapi:
-  #        paths:
-  #            gribapi@1.20.0.2%gcc: /project/c14/install/kesch/grib_api/v1.20.0.2/gnu/
-  #            gribapi@1.20.0.2%cce: /project/c14/install/kesch/grib_api/v1.20.0.2/cce/
-  #            gribapi@1.20.0.2%pgi: /project/c14/install/kesch/grib_api/v1.20.0.2/pgi/
-
-  #    grib1-cosmo:
-  #        paths:
-  #            grib1-cosmo@1.2: /project/c14/install/kesch/libgrib1/
-  #
-      netcdf:
-          paths:
-              netcdf@4.6.1.2%intel arch=cray-cnl6-mic_knl: /opt/cray/pe/netcdf/4.6.1.2/INTEL/16.0 
-              netcdf@4.6.1.2%cce arch=cray-cnl6-haswell: /opt/cray/pe/netcdf/4.6.1.2/CRAY/8.6 
-          modules:
-              #netcdf@4.6.1.2%intel: cray-netcdf/4.6.1.2
-              netcdf@4.4.1.1%gcc arch=linux-rhel7-x86_64: netcdf/4.4.1.1-gmvolf-17.02
-              netcdf@4.4.1.1%cce arch=linux-rhel7-x86_64: netCDF/4.4.1.1-CrayCCE-17.06
-          buildable: False
-
-      netcdf-fortran:
-          paths:
-              netcdf-fortran@4.6.1.2%intel arch=cray-cnl6-mic_knl: /opt/cray/pe/netcdf/4.6.1.2/INTEL/16.0 
-              netcdf-fortran@4.6.1.2%cce arch=cray-cnl6-haswell: /opt/cray/pe/netcdf/4.6.1.2/CRAY/8.6 
-          modules:
-              #netcdf-fortran@4.6.1.2%intel: cray-netcdf/4.6.1.2
-              netcdf-fortran@4.4.4%gcc arch=linux-rhel7-x86_64: netcdf-fortran/4.4.4-gmvolf-17.02
-              netcdf-fortran@4.4.4%cce arch=linux-rhel7-x86_64: netCDF-Fortran/4.4.4-CrayCCE-17.06
-          buildable: False 
-
-      jasper:
-          paths:
-              jasper@1.900.1: /usr/
+    jdk:
+      paths:
+        jdk@8.0_121 arch=linux-rhel7-x86_64: /apps/escha/UES/jenkins/RH7.3-gnu_PE17.02/easybuild/software/java/1.8.0_121
+      buildable: true
+      version: []
+      target: []
+      providers: {}
+      modules: {}
+      compiler: []
+    ant:
+      paths:
+        ant@1.9.9 arch=linux-rhel7-x86_64: /project/c14/install/kesch/ant/apache-ant-1.9.9/
+        ant@1.10.2 arch=linux-rhel7-x86_64: /project/c14/install/kesch/ant/apache-ant-1.10.2/
+      buildable: true
+      version: []
+      target: []
+      providers: {}
+      modules: {}
+      compiler: []
+    cmake:
+      paths:
+        cmake@3.14.5 : /users/jenkins/easybuild/kesch/modules/all/cmake/3.14.5
+        cmake@3.9.1%cce arch=linux-rhel7-x86_64: /apps/escha/UES/RH7.3_generic/easybuild/software/cmake/3.9.1/
+        cmake@3.8.1%intel arch=cray-cnl6-mic_knl: /apps/common/UES/modulefiles/CMake/3.8.1/
+      buildable: true
+      version: []
+      target: []
+      providers: {}
+      compiler: []
+    boost:
+      paths:
+        boost@1.71.9%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_71_0/
+        boost@1.67.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_67_0/
+        boost@1.66.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_66_0/
+        boost@1.65.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_65_0/
+        boost@1.64.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_64_0/
+        boost@1.67.0%intel arch=cray-cnl6-mic_knl: /project/c14/install/tave/boost/boost_1_67_0/
+        boost@1.67.0%gcc arch=cray-cnl6-haswell: /project/c14/install/daint/boost/boost_1_67_0/
+      buildable: true
+      version: []
+      target: []
+      providers: {}
+      modules: {}
+      compiler: []
+    cuda:
+      modules:
+        cuda@8.0.61 arch=cray-cnl6-haswell: cudatoolkit/8.0.61
+        cuda@9.2.148: cudatoolkit/9.2.148
+      buildable: true
+      version: []
+      target: []
+      providers: {}
+      paths: {}
+      compiler: []
+  compilers:
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags:
+        fflags: -D__CRAY_FORTRAN__
+      modules:
+      - PrgEnv-cce/17.06
+      - cray-libsci/18.07.1
+      - cce/8.7.7
+      operating_system: rhel7
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      spec: cce@8.7.7
+      target: any
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags: {}
+      modules:
+      - PrgEnv-gnu/17.02
+      - gcc/4.9.1
+      operating_system: rhel7
+      paths:
+        cc: gcc
+        cxx: g++
+        f77: gfortran
+        fc: gfortran
+      spec: gcc@4.9.1
+      target: any
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags: {}
+      modules:
+      - PrgEnv-gnu/17.02
+      operating_system: rhel7
+      paths:
+        cc: gcc
+        cxx: g++
+        f77: gfortran
+        fc: gfortran
+      spec: gcc@5.4.0
+      target: any
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags: {}
+      modules:
+      - PrgEnv-gnu/17.02
+      - gcc/6.1.0
+      operating_system: rhel7
+      paths:
+        cc: gcc
+        cxx: g++
+        f77: gfortran
+        fc: gfortran
+      spec: gcc@6.1.0
+      target: any
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags: {}
+      modules:
+      - PrgEnv-gnu
+      - gcc/5.3.0
+      - cray-mpich
+      operating_system: cnl6
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      spec: gcc@5.3.0
+      target: haswell
