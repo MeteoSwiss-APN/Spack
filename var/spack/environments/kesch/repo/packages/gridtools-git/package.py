@@ -38,7 +38,17 @@ class GridtoolsGit(CMakePackage):
 
     depends_on('ncurses%gcc')
     depends_on('cmake@3.14.5')
-    depends_on('boost@1.53.0:')
+    depends_on('boost@1.6.1:')
+    depends_on('mpi')
 
-    
+    def cmake_args(self):
+      spec = self.spec
+      args = []
+
+      args.append('-DGT_INSTALL_EXAMPLES=OFF')
+      args.append('-DBUILD_TESTING=OFF')
+      args.append('-DBUILD_SHARED_LIBS=OFF')
+      args.append('-DGT_USE_MPI=ON')
+      args.append('DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
+      return args
 

@@ -31,13 +31,15 @@ class CosmoDycore(CMakePackage):
     git      = "git@github.com:COSMO-ORG/cosmo.git"
     maintainers = ['elsagermann']
     
-    version('develop')
+    version('master', branch='master')
 
     variant('testing', default=False, description="Compile Dycore unittests")
     variant('gpu', default=False, description="GPU dycore")
     
-    depends_on('gridtools-git')
+    depends_on('gridtools-git@1.1.0')
     depends_on('boost@1.71.0')
+    depends_on('serialbox')
+    depends_on('mpi')
 
     root_cmakelists_dir='dycore'
 
@@ -46,10 +48,16 @@ class CosmoDycore(CMakePackage):
 
       args = []
       GridToolsDir = spec['gridtools-git'].prefix + '/lib/cmake'
+      SerialBoxDir = spec['serialbox'].prefix + '/cmake'
+      
+      args.append('-DSerialbox_DIR={0}'.format(SerialBoxDir))
       args.append('-DGridTools_DIR={0}'.format(GridToolsDir))  
       args.append('-DCMAKE_BUILD_TYPE=Release')
       args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
       args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
+      args.append('-DBUILD_TESTING=OFF')
+      args.append('-DBoost_USE_STATIC_LIBS=ON')
+      args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
       
       if not spec.variants['testing'].value:
           args.append('-DDYCORE_UNITTEST=OFF')
