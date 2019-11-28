@@ -31,7 +31,7 @@ class Libgrib1(MakefilePackage):
     # notify when the package is updated.
     maintainers = ['elsagermann']
     build_directory='libgrib1_cosmo/source'
-
+   
     version('2019-11-22', commit='0ef8d36734609170459a536329dddcad0d930675')
 
     def setup_environment(self, spack_env, run_env):
@@ -44,7 +44,12 @@ class Libgrib1(MakefilePackage):
             'LIBRARY_DIR = $(INSTALL_DIR)/lib',
         ]
         with working_dir(self.build_directory):
-            options = ['-f', 'Makefile.kesch.gnu']
+            Makefilename = "Makefile.kesch."
+            if self.compiler.name == 'gcc':
+                Makefilename += "gnu"
+            else:
+                Makefilename += self.compiler.name
+            options = ['-f', Makefilename]
             env['PWD'] = '.' 
             make(*options)
 

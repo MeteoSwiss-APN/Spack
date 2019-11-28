@@ -29,16 +29,15 @@ class CosmoDycore(CMakePackage):
     """FIXME: Put a proper description of your package here."""
 
     git      = "git@github.com:COSMO-ORG/cosmo.git"
-    maintainers = ['havogt', 'clementval']
-
-    version('5.05a', commit='ef85dacc25cbadec42b0a7b77633c4cfe2aa9fb9')
+    maintainers = ['elsagermann']
+    
+    version('develop')
 
     variant('testing', default=False, description="Compile Dycore unittests")
-    #TODO for tests we need to check that stella supports it!
     variant('gpu', default=False, description="GPU dycore")
-
-    depends_on('stella')
-    depends_on('stella +cuda', when='+gpu')
+    
+    depends_on('gridtools-git')
+    depends_on('boost@1.71.0')
 
     root_cmakelists_dir='dycore'
 
@@ -46,7 +45,11 @@ class CosmoDycore(CMakePackage):
       spec = self.spec
 
       args = []
-      args.append('-DSTELLA_DIR={0}'.format(spec['stella'].prefix))
+      GridToolsDir = spec['gridtools-git'].prefix + '/lib/cmake'
+      args.append('-DGridTools_DIR={0}'.format(GridToolsDir))  
+      args.append('-DCMAKE_BUILD_TYPE=Release')
+      args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
+      args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
       
       if not spec.variants['testing'].value:
           args.append('-DDYCORE_UNITTEST=OFF')

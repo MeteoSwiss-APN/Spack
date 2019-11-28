@@ -4,17 +4,19 @@
 # configuration settings.
 spack:
   # add package specs to the `specs` list
-  specs: [libgrib1, jasper, grib-api, ncurses, ncurses%gcc, cmake%cce]
+  specs: [libgrib1, jasper, grib-api, ncurses, ncurses%gcc, cmake%cce, gridtools-git,
+    serialbox%gcc@8.3.0]
   view: true
   packages:
     cmake:
       modules:
-        cmake@3.13.4 arch=cray-cnl6-haswell: cmake/3.14.5
+        cmake@3.14.5: cmake/3.14.5
       buildable: true
       version: []
       target: []
       providers: {}
       compiler: []
+      paths: {}
     boost:
       paths:
         boost@1.71.9%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_71_0/
@@ -32,7 +34,7 @@ spack:
       compiler: []
     cuda:
       modules:
-        cuda@10.0 : cuda10.0/toolkit/10.0.130
+        cuda@10.0: cuda10.0/toolkit/10.0.130
       buildable: true
       version: []
       target: []
@@ -69,7 +71,7 @@ spack:
         f77: ftn
         fc: ftn
       spec: cce@8.7.10
-      target: any  
+      target: any
   - compiler:
       environment: {}
       extra_rpaths: []
@@ -110,5 +112,20 @@ spack:
         cxx: g++
         f77: gfortran
         fc: gfortran
-      spec: gcc@6.1.0
+      spec: gcc@8.3.0
+      target: any
+  - compiler:
+      environment: {}
+      extra_rpaths: []
+      flags: {}
+      modules:
+      - PrgEnv-pgi/19.9
+      - pgi/19.9-gcc-8.3.0
+      operating_system: rhel7
+      paths:
+        cc: gcc
+        cxx: g++
+        f77: gfortran
+        fc: gfortran
+      spec: pgi@19.9
       target: any

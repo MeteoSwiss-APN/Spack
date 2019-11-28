@@ -19,15 +19,16 @@ class Cosmo(MakefilePackage):
     #version('master')  
     version('5.05a', commit='ef85dacc25cbadec42b0a7b77633c4cfe2aa9fb9')
     version('5.05',  commit='5ade2c96776db00ea945ef18bfeacbeb7835277a')
+    version('5.06', commit='26b63054d3e98dc3fa8b7077b28cf24e10bec702')
 
-    depends_on('netcdf-fortran') 
-    depends_on('netcdf')
+#    depends_on('netcdf-fortran') 
+#    depends_on('netcdf')
 #    depends_on('netcdf', when='+netcdf')
     # depends_on('dycore') TODO we need to target the exactly same version .. smth like that
 #    depends_on('cosmo-dycore@5.05a', when='+cppdycore', when='@5.05a')
-    depends_on('cosmo-dycore', when='+cppdycore')
+    depends_on('cosmo-dycore')
     depends_on('cosmo-dycore +gpu', when='+gpu')
-    depends_on('grib1-cosmo')
+    depends_on('libgrib1')
     depends_on('grib-api +fortran jp2k=jasper')
 #    depends_on('grib-api@1.13.1 +fortran jp2k=jasper')
     depends_on('jasper@1.900.1') # grib-api for COSMO needs extactly this version
