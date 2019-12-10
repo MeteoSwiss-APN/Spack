@@ -25,27 +25,25 @@
 from spack import *
 
 
-class Grib1Cosmo(CMakePackage):
-    """Grib1 for COSMO."""
+class Gribapi(CMakePackage):
+    """GribAPI."""
 
-    # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://www.example.com"
-    git      = 'git@github.com:havogt/libgrib1.git'
+    git      = 'git@github.com:C2SM-RCM/libgrib-api-vendor.git'
 
-    root_cmakelists_dir='libgrib1_cosmo'
-    version('1.5dummy', commit='e61640a9c295277b87d0066d8d60fa04d9f082ad')
-    version('1.4dummy', commit='082108c2e5955e3b48df50a028ebb7cd08593815')
-    version('1.3dummy', commit='6c697e3d9f9cdfe3cab3372a594b18b57344b03f')
+#    root_cmakelists_dir='libgrib1_cosmo'
+    version('1.20.0p4', commit='4e54cd3ff5e8849711a47b885f71e184261b06c2')
 
-    @run_before('cmake')
-    def edit(self):
-        with working_dir('libgrib1_cosmo/source'):
-            cmakefile = FileFilter('CMakeLists.txt')
-            if self.compiler.name == 'cce':
-                cmakefile.filter('set\(CMAKE_Fortran_FLAGS.*',  'set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -hnosecond_underscore -Ofp0 -eZ -O3")')
+# cmake .. -DENABLE_NETCDF=OFF -DENABLE_JPG=OFF -DENABLE_PYTHON=OFF -DENABLE_PNG=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/project/g110/install/$slave/grib_api/$GRIB_API_COSMO_RESOURCES_VERSION/$compiler
 
-    def setup_environment(self, spack_env, run_env):
-        spack_env.set('LIBNAME', 'grib1')
+    def cmake_args(self):
+        spec = self.spec
 
-    # FIXME: Add dependencies if required.
+        args = []
+        args.append('-DENABLE_NETCDF=OFF')
+        args.append('-DENABLE_JPG=OFF')
+        args.append('-DENABLE_PYTHON=OFF')
+        args.append('-DENABLE_PNG=OFF')
+        args.append('-DBUILD_SHARED_LIBS=OFF') #TODO make this optional
 
+        return args

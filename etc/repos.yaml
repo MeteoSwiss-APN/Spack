@@ -1,2 +1,2 @@
 repos:
-  -$spack/var/spack/environments/kesch/repo
+  -$spack/repo
