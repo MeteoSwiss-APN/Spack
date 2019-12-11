@@ -25,7 +25,7 @@ from spack import *
 
 class Serialbox(CMakePackage):
     """Serialbox is part of the GridTools Framework. Serialbox is a serialization library and tools for C/C++, Python3 and Fortran."""
-
+    homepage = "https://github.com/GridTools/serialbox"
     git      = "git@github.com:GridTools/serialbox.git"
 
     maintainers = ['elsagermann']

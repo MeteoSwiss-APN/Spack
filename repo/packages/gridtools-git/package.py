@@ -29,7 +29,8 @@ class GridtoolsGit(CMakePackage):
     git = "git@github.com:GridTools/gridtools.git"
 
     maintainers = ['elsagermann']
-
+    
+    version('master', branch='master')
     version('1.1.0', commit='12ee09103bcd46edb978259b59e90d611f32ed01')
     version('1.0.3', commit='8468d2000ccec95d3a1c481664e6b41a0b038413')
     version('1.0.2', commit='2d42ea7d7639de1b52a2106e049a21cfea7192ea')
@@ -49,6 +50,6 @@ class GridtoolsGit(CMakePackage):
       args.append('-DBUILD_TESTING=OFF')
       args.append('-DBUILD_SHARED_LIBS=OFF')
       args.append('-DGT_USE_MPI=ON')
-      args.append('DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
+      args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
       return args
 
