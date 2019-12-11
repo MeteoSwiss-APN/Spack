@@ -1,0 +1,55 @@
+packages:
+  jdk:
+    paths:
+      jdk@8.0_121 arch=linux-rhel7-x86_64: /apps/escha/UES/jenkins/RH7.3-gnu_PE17.02/easybuild/software/java/1.8.0_121
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    modules: {}
+    compiler: []
+  ant:
+    paths:
+      ant@1.9.9 arch=linux-rhel7-x86_64: /project/c14/install/kesch/ant/apache-ant-1.9.9/
+      ant@1.10.2 arch=linux-rhel7-x86_64: /project/c14/install/kesch/ant/apache-ant-1.10.2/
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    modules: {}
+    compiler: []
+  cmake:
+    paths:
+      cmake@3.14.5 : /users/jenkins/easybuild/kesch/modules/all/cmake/3.14.5
+      cmake@3.9.1%cce arch=linux-rhel7-x86_64: /apps/escha/UES/RH7.3_generic/easybuild/software/cmake/3.9.1/
+      cmake@3.8.1%intel arch=cray-cnl6-mic_knl: /apps/common/UES/modulefiles/CMake/3.8.1/
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    compiler: []
+  boost:
+    paths:
+      boost@1.71.9%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_71_0/
+      boost@1.67.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_67_0/
+      boost@1.66.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_66_0/
+      boost@1.65.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_65_0/
+      boost@1.64.0%cce arch=linux-rhel7-x86_64: /project/c14/install/kesch/boost/boost_1_64_0/
+      boost@1.67.0%intel arch=cray-cnl6-mic_knl: /project/c14/install/tave/boost/boost_1_67_0/
+      boost@1.67.0%gcc arch=cray-cnl6-haswell: /project/c14/install/daint/boost/boost_1_67_0/
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    modules: {}
+    compiler: []
+  cuda:
+    modules:
+      cuda@8.0.61 arch=cray-cnl6-haswell: cudatoolkit/8.0.61
+      cuda@9.2.148: cudatoolkit/9.2.148
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    paths: {}
+    compiler: []

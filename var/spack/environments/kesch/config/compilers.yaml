@@ -1,0 +1,78 @@
+compilers:
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags:
+      fflags: -D__CRAY_FORTRAN__
+    modules:
+    - PrgEnv-cce/17.06
+    - cray-libsci/18.07.1
+    - cce/8.7.7
+    operating_system: rhel7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: cce@8.7.7
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu/17.02
+    - gcc/4.9.1
+    operating_system: rhel7
+    paths:
+      cc: gcc
+      cxx: g++
+      f77: gfortran
+      fc: gfortran
+    spec: gcc@4.9.1
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu/17.02
+    operating_system: rhel7
+    paths:
+      cc: gcc
+      cxx: g++
+      f77: gfortran
+      fc: gfortran
+    spec: gcc@5.4.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu/17.02
+    - gcc/6.1.0
+    operating_system: rhel7
+    paths:
+      cc: gcc
+      cxx: g++
+      f77: gfortran
+      fc: gfortran
+    spec: gcc@6.1.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/5.3.0
+    - cray-mpich
+    operating_system: cnl6
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: gcc@5.3.0
+    target: haswell
