@@ -1,0 +1,38 @@
+packages:
+  serialbox:
+    compiler: [gcc@8.3.0]
+    buildable: true
+    version: [2.5.4]
+    target: []
+    providers: {}
+    paths: {}
+    modules: {}
+  cmake:
+    modules:
+      cmake@3.14.5: cmake/3.14.5
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    compiler: []
+    paths: {}
+  boost:
+    paths:
+      boost@1.71.9: /project/c14/install/arolla/boost/boost_1_71_0/
+      boost@1.67.0: /project/c14/install/arolla/boost/boost_1_67_0/
+      boost@1.64.0: /project/c14/install/arolla/boost/boost_1_64_0/
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    modules: {}
+    compiler: []
+  cuda:
+    modules:
+      cuda@10.0: cuda10.0/toolkit/10.0.130
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    paths: {}
+    compiler: []
