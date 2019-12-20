@@ -53,3 +53,5 @@ packages:
     providers: {}
     paths: {}
     compiler: []
+  ncurses:
+    compiler: [gcc]

@@ -1,0 +1,40 @@
+packages:
+  serialbox:
+    compiler: [gcc@8.3.0]
+    buildable: true
+    version: [2.5.4]
+    target: []
+    providers: {}
+    paths: {}
+    modules: {}
+  cmake:
+    modules:
+      cmake@3.14.5: cmake/3.14.3
+    buildable: true
+    version: [3.14.3]
+    target: []
+    providers: {}
+    compiler: []
+    paths: {}
+  boost:
+    buildable: true
+    version: []
+  cuda:
+    modules:
+      cuda@10.0: cuda10.0/toolkit/10.0.130
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    paths: {}
+    compiler: []
+  ncurses:
+    compiler: [gcc]
+  netcdf:
+    modules:
+      netcdf@4.5.0: netcdf/gcc/64/4.5.0
+  python:
+    modules:
+      python@2.7.16: python/2.7.16
+      python@3.7.3: python/3.7.3
+

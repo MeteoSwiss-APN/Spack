@@ -5,7 +5,7 @@
 spack:
   # add package specs to the `specs` list
   specs: [libgrib1, jasper, grib-api, ncurses, ncurses%gcc, cmake%cce, gridtools-git,
-    serialbox%gcc@8.3.0, serialbox]
+    serialbox%gcc@8.3.0, serialbox, libxml2, cosmo-dycore, libiconv]
   view: true
   include:
   - ./config/compilers.yaml

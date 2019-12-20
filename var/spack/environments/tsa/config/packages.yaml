@@ -11,14 +11,14 @@ packages:
     modules:
       cmake@3.14.5: cmake/3.14.5
     buildable: true
-    version: []
+    version: [3.14.5]
     target: []
     providers: {}
     compiler: []
     paths: {}
   boost:
     paths:
-      boost@1.71.9: /project/c14/install/arolla/boost/boost_1_71_0/
+      boost@1.71.0: /project/c14/install/arolla/boost/boost_1_71_0/
       boost@1.67.0: /project/c14/install/arolla/boost/boost_1_67_0/
       boost@1.64.0: /project/c14/install/arolla/boost/boost_1_64_0/
     buildable: true
@@ -36,3 +36,6 @@ packages:
     providers: {}
     paths: {}
     compiler: []
+  ncurses:
+    compiler: [gcc]
+

@@ -1,1 +1,1 @@
-/scratch-shared/meteoswiss/scratch/egermann/cosmo-org/elsaspack/opt/spack/linux-rhel7-haswell/gcc-4.8.5/numactl-2.0.12-ogalaqjcn4w6y3opvzr4cgghmxnvpvlh/include/numacompat1.h
+/scratch-shared/meteoswiss/scratch/egermann/spack/opt/spack/linux-rhel7-skylake_avx512/gcc-8.3.0/numactl-2.0.12-sao4blrrkwm3obxiumw5o6mixnqke6l4/include/numacompat1.h
