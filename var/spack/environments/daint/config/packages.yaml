@@ -1,0 +1,53 @@
+packages:
+  all:
+    compiler: []
+  serialbox:
+    compiler: [gcc@8.3.0]
+    buildable: true
+    version: [2.5.4]
+    target: []
+    providers: {}
+    paths: {}
+    modules: {}
+  cmake:
+    modules:
+      cmake@3.14.5: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5/bin
+    buildable: true
+    version: [3.14.5]
+    target: []
+    providers: {}
+    compiler: []
+    paths: {}
+  boost:
+    paths:
+      boost@1.70.0: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/Boost/1.70.0-CrayGNU-19.10-python3
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    modules: {}
+    compiler: []
+  cuda:
+    modules:
+      cuda@10.1.105_3: cudatoolkit/10.1.105_3.27-7.0.1.1_4.1__ga311ce7
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+    paths: {}
+    compiler: []
+  ncurses:
+    compiler: [gcc]
+  grib-api:
+    version: [1.20.0.2]
+  mpi:
+    modules:
+      cray-mpich@7.7.10: cray-mpich/7.7.10
+      cray-mpich@7.7.9: cray-mpich/7.7.9
+      cray-mpich@7.7.6: cray-mpich/7.7.6
+  netcdf-fortran:
+    paths:
+      netcdf-fortran@4.4.5: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0
+  netcdf-c:
+    paths:
+      netcdf-c@4.7.0 : /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0
