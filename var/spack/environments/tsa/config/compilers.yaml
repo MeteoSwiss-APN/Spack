@@ -77,12 +77,11 @@ compilers:
     flags: {}
     modules:
     - PrgEnv-pgi/19.9
-    - pgi/19.9-gcc-8.3.0
     operating_system: rhel7
     paths:
       cc: gcc
       cxx: g++
-      f77: gfortran
-      fc: gfortran
+      f77: pgfortran
+      fc: pgfortran
     spec: pgi@19.9
     target: any

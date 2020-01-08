@@ -40,7 +40,6 @@ class GridtoolsGit(CMakePackage):
     depends_on('ncurses')
     depends_on('cmake')
     depends_on('boost')
-    depends_on('mpi')
 
     def cmake_args(self):
       spec = self.spec
@@ -49,7 +48,11 @@ class GridtoolsGit(CMakePackage):
       args.append('-DGT_INSTALL_EXAMPLES=OFF')
       args.append('-DBUILD_TESTING=OFF')
       args.append('-DBUILD_SHARED_LIBS=OFF')
-      args.append('-DGT_USE_MPI=ON')
+      #args.append('-DGT_USE_MPI=ON')
+      args.append('-DBoost_NO_BOOST_CMAKE=ON')
+     #args.append('-DCMAKE_BUILD_TYPE:STRING="Release"')
+      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
       args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
+     # -DBOOST_ROOT="$DEFAULT_BOOST_ROOT"
       return args
 

@@ -1,4 +1,6 @@
 packages:
+  all:
+    compiler: []
   serialbox:
     compiler: [gcc@8.3.0]
     buildable: true
@@ -29,7 +31,7 @@ packages:
     compiler: []
   cuda:
     modules:
-      cuda@10.0: cuda10.0/toolkit/10.0.130
+      cuda@10.1.: cuda/10.1.243
     buildable: true
     version: []
     target: []
@@ -38,4 +40,14 @@ packages:
     compiler: []
   ncurses:
     compiler: [gcc]
-
+  grib-api:
+    version: [1.20.0.2]
+  openmpi:
+    paths:
+      openmpi@4.0.2: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/OpenMPI/4.0.2-PGI-19.9-GCC-8.3.0-cuda-10.1
+  netcdf-fortran:
+    paths:
+      netcdf-fortran@4.4.5: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0
+  netcdf-c:
+    paths:
+      netcdf-c@4.7.0 : /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0

@@ -57,6 +57,7 @@ class CosmoDycore(CMakePackage):
       args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
       args.append('-DBUILD_TESTING=OFF')
       args.append('-DBoost_USE_STATIC_LIBS=ON')
+      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
       args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
       
       if not spec.variants['testing'].value:
