@@ -36,7 +36,7 @@ class CosmoDycore(CMakePackage):
     variant('testing', default=False, description="Compile Dycore unittests")
     variant('gpu', default=False, description="GPU dycore")
     
-    depends_on('gridtools-git')
+    depends_on('gridtools')
     depends_on('boost')
     depends_on('serialbox')
     depends_on('mpi')
@@ -47,7 +47,7 @@ class CosmoDycore(CMakePackage):
       spec = self.spec
 
       args = []
-      GridToolsDir = spec['gridtools-git'].prefix + '/lib/cmake'
+      GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
       SerialBoxDir = spec['serialbox'].prefix + '/cmake'
       
       args.append('-DSerialbox_DIR={0}'.format(SerialBoxDir))

@@ -29,12 +29,12 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-dycore')
     depends_on('cuda')
     depends_on('cosmo-dycore +gpu', when='+gpu')
-    depends_on('libgrib1')
-    depends_on('grib-api')
+    depends_on('libgrib1%pgi@19.9-gcc')
+    depends_on('cosmo-grib-api')
 #    depends_on('grib-api@1.13.1 +fortran jp2k=jasper')
     depends_on('jasper@1.900.1') # grib-api for COSMO needs extactly this version
     depends_on('perl@5.16.3')
-    depends_on('gridtools-git')
+    depends_on('gridtools')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('gpu', default=False, description='Build the GPU version of COSMO')
@@ -75,7 +75,7 @@ class Cosmo(MakefilePackage):
 
     def edit(self, spec, prefix):
         env['BOOST_ROOT'] = spec['boost'].prefix
-        env['GRIDTOOLS_DIR'] = spec['gridtools-git'].prefix
+        env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
         env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
@@ -99,21 +99,21 @@ class Cosmo(MakefilePackage):
             #opcomp.filter('F90 *=.*','F90 = ftn')
             """
             optionsfilter = FileFilter('Options.lib.cpu')
-            optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['grib-api'].prefix))
-            optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{0}/libjasper/lib -ljasper'.format(spec['grib-api'].prefix))
+            optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['cosmo-grib-api'].prefix))
+            optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{0}/libjasper/lib -ljasper'.format(spec['cosmo-grib-api'].prefix))
             optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1'.format(spec['libgrib1'].prefix))
-            optionsfilter.filter('GRIDTOOLS =.*',  'GRIDTOOLS = {0}'.format(spec['gridtools-git'].prefix))
-            optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools-git'].prefix))
-            optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLI = -I{0}/include/gridtools'.format(spec['gridtools-git'].prefix))
+            optionsfilter.filter('GRIDTOOLS =.*',  'GRIDTOOLS = {0}'.format(spec['gridtools'].prefix))
+            optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools'].prefix))
+            optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLI = -I{0}/include/gridtools'.format(spec['gridtools'].prefix))
             """
             optionsfilter = FileFilter('Options.lib.gpu')
-            optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['grib-api'].prefix))
-            optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{1}/libjasper/lib -ljasper'.format(spec['grib-api'].prefix, spec['jasper'].prefix))
+            optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['cosmo-grib-api'].prefix))
+            optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{1}/libjasper/lib -ljasper'.format(spec['cosmo-grib-api'].prefix, spec['jasper'].prefix))
             optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1_{1}'.format(spec['libgrib1'].prefix, self.compiler.name))
             optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
             optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix)) 
-            optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools-git'].prefix))
-            optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLSI = -I{0}/include/gridtools'.format(spec['gridtools-git'].prefix))  
+            optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools'].prefix))
+            optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLSI = -I{0}/include/gridtools'.format(spec['gridtools'].prefix))  
             optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_double -ldycore_base_bindings_double'))
             optionsfilter.filter('DYCOREGTI =.*',  'DYCOREGTI = -I{0}'.format(spec['cosmo-dycore'].prefix))
 

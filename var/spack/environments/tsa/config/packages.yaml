@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: []
+    compiler: [pgi@19.9, pgi@19.9-gcc, gcc]
   serialbox:
     compiler: [gcc@8.3.0]
     buildable: true

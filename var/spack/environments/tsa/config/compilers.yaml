@@ -85,3 +85,17 @@ compilers:
       fc: pgfortran
     spec: pgi@19.9
     target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-pgi/19.9
+    operating_system: rhel7
+    paths:
+      cc: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgcc
+      cxx: g++
+      f77: pgfortran
+      fc: pgfortran
+    spec: pgi@19.9-gcc
+    target: any

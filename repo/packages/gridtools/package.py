@@ -23,7 +23,7 @@
 from spack import *
 
 
-class GridtoolsGit(CMakePackage):
+class Gridtools(CMakePackage):
     """The GridTools framework is a set of libraries and utilities to develop performance portable applications in the area of weather and climate."""
 
     git = "git@github.com:GridTools/gridtools.git"

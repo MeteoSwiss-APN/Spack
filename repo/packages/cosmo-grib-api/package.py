@@ -6,7 +6,7 @@
 from spack import *
 
 
-class GribApi(AutotoolsPackage):
+class CosmoGribApi(AutotoolsPackage):
     """The ECMWF GRIB API is an application program interface accessible from
        C, FORTRAN and Python programs developed for encoding and decoding WMO
        FM-92 GRIB edition 1 and edition 2 messages."""
