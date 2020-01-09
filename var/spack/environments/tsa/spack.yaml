@@ -4,9 +4,9 @@
 # configuration settings.
 spack:
   # add package specs to the `specs` list
-  specs: [libgrib1, jasper, ncurses, ncurses%gcc, cmake%cce, serialbox, gridtools-git,
-    openmpi, gridtools-git%gcc, openmpi%gcc, grib-api@1.20.0.2, gridtools-git%pgi,
-    serialbox%pgi, cmake%pgi, gridtools-git@1.0.2%pgi, libgrib1%gcc, libgrib1%gcc@6.1,
+  specs: [libgrib1, jasper, ncurses, ncurses%gcc, cmake%cce, serialbox,
+    openmpi, openmpi%gcc, grib-api@1.20.0.2, 
+    serialbox%pgi, cmake%pgi, libgrib1%gcc, libgrib1%gcc@6.1,
     libgrib1%pgi]
   view: true
   include:
