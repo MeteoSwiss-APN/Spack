@@ -4,12 +4,8 @@
 # configuration settings.
 spack:
   # add package specs to the `specs` list
-  specs: [libgrib1, jasper, ncurses, ncurses%gcc, cmake%cce, serialbox,
-    openmpi, openmpi%gcc, grib-api@1.20.0.2, 
-    serialbox%pgi, cmake%pgi, libgrib1%gcc, libgrib1%gcc@6.1,
-    libgrib1%pgi]
+  specs: []
   view: true
   include:
   - ./config/compilers.yaml
   - ./config/packages.yaml
-  - ./config/modules.yaml

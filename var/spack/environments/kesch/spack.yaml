@@ -4,7 +4,7 @@
 # configuration settings.
 spack:
   # add package specs to the `specs` list
-  specs: [libgrib1, jasper, grib-api, ncurses, ncurses%gcc, cmake%cce]
+  specs: []
   view: true
   include:
   - ./config/compilers.yaml
