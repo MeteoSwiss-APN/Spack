@@ -36,7 +36,7 @@ class CosmoDycore(CMakePackage):
     variant('testing', default=False, description="Compile Dycore unittests")
     variant('gpu', default=False, description="GPU dycore")
     
-    depends_on('gridtools')
+    depends_on('gridtools@1.1.2')
     depends_on('boost')
     depends_on('serialbox')
     depends_on('mpi')
