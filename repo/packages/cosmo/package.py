@@ -81,6 +81,7 @@ class Cosmo(MakefilePackage):
         env['BOOST_ROOT'] = spec['boost'].prefix
         env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
         env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
+        env['MPI_ROOT'] = spec['openmpi'].prefix
         # sets CLAW paths if variant +claw
         if '+claw' in self.spec:
             env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
