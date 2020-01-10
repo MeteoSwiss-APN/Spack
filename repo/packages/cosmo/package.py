@@ -35,6 +35,7 @@ class Cosmo(MakefilePackage):
     depends_on('jasper@1.900.1') # grib-api for COSMO needs extactly this version
     depends_on('perl@5.16.3')
     depends_on('gridtools')
+    depends_on('claw%gcc@8.3.0', when='+claw')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('gpu', default=False, description='Build the GPU version of COSMO')
@@ -42,6 +43,7 @@ class Cosmo(MakefilePackage):
     variant('parallel', default=True, description='Build parallel COSMO') #TODO enable
     variant('debug', default=False, description='Build debug mode')
     variant('single-precision', default=False, description='Build with single precision enabled')
+    variant('claw', default=False, description='Build with claw-compiler')
 
 
 
@@ -60,6 +62,8 @@ class Cosmo(MakefilePackage):
             build.append('SINGLEPRECISION=1')
         if '+cppdycore' in self.spec:
             build.append('CPP_GT_DYCORE=1')
+        if '+claw' in self.spec:
+            build.append('CLAW=1')
         target = ''
         if '+parallel' in self.spec:
             target += 'par'
@@ -77,9 +81,13 @@ class Cosmo(MakefilePackage):
         env['BOOST_ROOT'] = spec['boost'].prefix
         env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
         env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
+        # sets CLAW paths if variant +claw
+        if '+claw' in self.spec:
+            env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
+            env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/' 
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            makefile.filter('INSTALL_PREFIX=', 'INSTALL_PREFIX={0}'.format(prefix))
+            makefile.filter('INSTALL_PREFIX=', 'INSTALL_PREFIX={0}'.format(prefix))            
             if self.compiler.name == 'gcc':
                 makefile.filter('/Options',  '/Options.arolla.gnu.cpu')
                 opcomp = FileFilter('Options.arolla.gnu.cpu')
