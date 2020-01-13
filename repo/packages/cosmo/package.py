@@ -82,7 +82,7 @@ class Cosmo(MakefilePackage):
         env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
         env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
         env['MPI_ROOT'] = spec['openmpi'].prefix
-        env['CUDA_HOME'] = spec['cuda'].prefix
+        env['CUDA_ROOT'] = spec['cuda'].prefix
         # sets CLAW paths if variant +claw
         if '+claw' in self.spec:
             env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
