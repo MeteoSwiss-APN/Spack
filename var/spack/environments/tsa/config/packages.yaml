@@ -1,14 +1,6 @@
 packages:
   all:
     compiler: [pgi@19.9, pgi@19.9-gcc, gcc]
-  serialbox:
-    compiler: []
-    buildable: true
-    version: [2.5.4]
-    target: []
-    providers: {}
-    paths: {}
-    modules: {}
   cmake:
     modules:
       cmake@3.14.5: cmake/3.14.5
@@ -31,7 +23,7 @@ packages:
     compiler: []
   cuda:
     modules:
-      cuda@10.1.: cuda/10.1.243
+      cuda@10.1.243: cuda/10.1.243
     buildable: true
     version: []
     target: []
@@ -45,6 +37,11 @@ packages:
   openmpi:
     paths:
       openmpi@4.0.2: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/OpenMPI/4.0.2-PGI-19.9-GCC-8.3.0-cuda-10.1
+    compiler: [pgi]
+  openmpi:
+    paths:
+      openmpi@4.0.2: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/OpenMPI/4.0.2-gcccuda-2019b-cuda-10.1
+    compiler: [gcc]
   netcdf-fortran:
     paths:
       netcdf-fortran@4.4.5: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0

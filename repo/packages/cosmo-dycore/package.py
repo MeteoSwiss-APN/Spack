@@ -41,6 +41,7 @@ class CosmoDycore(CMakePackage):
     depends_on('boost')
     depends_on('serialbox@2.6.0', when='+test')
     depends_on('mpi')
+    depends_on('perl@5.16.3')
 
     root_cmakelists_dir='dycore'
     
@@ -62,7 +63,10 @@ class CosmoDycore(CMakePackage):
       args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
       args.append('-DBoost_USE_STATIC_LIBS=ON')
       args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
-
+      args.append('-DDYCORE_ENABLE_CUDA_AWARE_MPI=ON')
+      args.append('-DENABLE_CUDA=ON')
+      args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=OFF')
+      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
     
       if spec.variants['single-precision'].value:
         args.append('-DPRECISION=single')

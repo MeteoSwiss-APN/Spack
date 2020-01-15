@@ -38,7 +38,7 @@ class Gridtools(CMakePackage):
     version('1.0.1', commit='11053321adac080abee0c6d8399ed6a63479bb48')
     version('1.0.0', commit='5dfeace6f20eefa6633102533d5a0e1564361ecf')
 
-    variant('gpu', default=False, description="Target gpu")
+    variant('gpu', default=True, description="Target gpu")
 
     depends_on('ncurses')
     depends_on('cmake')
@@ -51,6 +51,8 @@ class Gridtools(CMakePackage):
       args = []
       
       args.append('-DBoost_NO_BOOST_CMAKE=ON')
+      args.append('-DGT_ENABLE_BACKEND_MC=OFF')
+      args.append('-DGT_ENABLE_BACKEND_NAIVE=OFF')
       args.append('-DGT_INSTALL_EXAMPLES=OFF')
       args.append('-DBUILD_SHARED_LIBS=OFF')
       args.append('-DCMAKE_BUILD_TYPE=Release')
@@ -64,8 +66,9 @@ class Gridtools(CMakePackage):
         args.append('-DCUDA_ARCH=sm_70') # only correct for tsarolla, kescha->sm_37, daint->sm_60
         args.append('-DGT_CUDA_ARCH=sm_70') # only correct for tsarolla, kescha->sm_37, daint->sm_60
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
+        args.append('-DGT_ENABLE_BACKEND_X86=OFF')
       else:
+        args.append('-DGT_ENABLE_BACKEND_CUDA=OFF')
         args.append('-DGT_ENABLE_BACKEND_X86=ON')
-
       return args
 

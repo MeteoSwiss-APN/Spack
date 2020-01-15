@@ -62,7 +62,7 @@ compilers:
     extra_rpaths: []
     flags: {}
     modules:
-    - gcc/8.3.0
+      - PrgEnv-gnu/19.2
     operating_system: rhel7
     paths:
       cc: gcc
