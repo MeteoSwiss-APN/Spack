@@ -26,9 +26,9 @@ class Cosmo(MakefilePackage):
 #    depends_on('netcdf', when='+netcdf')
     # depends_on('dycore') TODO we need to target the exactly same version .. smth like that
 #    depends_on('cosmo-dycore@5.05a', when='+cppdycore', when='@5.05a')
-    depends_on('cosmo-dycore')
     depends_on('cuda')
-    depends_on('cosmo-dycore +gpu', when='+gpu')
+    depends_on('cosmo-dycore%gcc', when='+cppdycore')
+    depends_on('cosmo-dycore%gcc +test', when='+dycoretest')
     depends_on('libgrib1%pgi@19.9-gcc')
     depends_on('cosmo-grib-api')
 #    depends_on('grib-api@1.13.1 +fortran jp2k=jasper')
@@ -38,7 +38,8 @@ class Cosmo(MakefilePackage):
     depends_on('claw%gcc@8.3.0', when='+claw')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
-    variant('gpu', default=False, description='Build the GPU version of COSMO')
+    variant('dycoretest', default=False, description='Compile Dycore unittest')
+    variant('gpu', default=True, description='Build the GPU version of COSMO')
     variant('serialization', default=False, description='Build with serialization enabled')
     variant('parallel', default=True, description='Build parallel COSMO') #TODO enable
     variant('debug', default=False, description='Build debug mode')

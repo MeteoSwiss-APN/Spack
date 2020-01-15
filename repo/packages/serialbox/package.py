@@ -31,7 +31,8 @@ class Serialbox(CMakePackage):
     maintainers = ['elsagermann']
 
     version('master', branch='master')
+    version('2.6.0', commit='eed195c47ab771c1682121ccbc89d2a556cdcb86')
     version('2.5.4', commit='26de94919c1b405b5900df5825791be4fa703ec0')
     version('2.4.3', commit='f15bd29db2e75d4e775bd133400bab33df55856b')
 
-    depends_on('boost@1.53.0:')
+    depends_on('boost@1.67.0')

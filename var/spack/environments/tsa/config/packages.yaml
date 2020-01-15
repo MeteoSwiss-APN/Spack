@@ -2,7 +2,7 @@ packages:
   all:
     compiler: [pgi@19.9, pgi@19.9-gcc, gcc]
   serialbox:
-    compiler: [gcc@8.3.0]
+    compiler: []
     buildable: true
     version: [2.5.4]
     target: []

@@ -33,38 +33,57 @@ class CosmoDycore(CMakePackage):
     
     version('master', branch='master')
 
-    variant('testing', default=False, description="Compile Dycore unittests")
-    variant('gpu', default=False, description="GPU dycore")
+    variant('test', default=False, description="Compile Dycore unittests")
+    variant('gpu', default=True, description="GPU dycore")
+    variant('single-precision', default=False, description='Build with single precision enabled')
     
     depends_on('gridtools@1.1.2')
     depends_on('boost')
-    depends_on('serialbox')
+    depends_on('serialbox@2.6.0', when='+test')
     depends_on('mpi')
 
     root_cmakelists_dir='dycore'
+    
+    def setup_environment(self, spack_env, run_env):
+        spack_env.set('GRIDTOOLS_ROOT', self.spec['gridtools'].prefix)
+        if self.spec.variants['test'].value:
+          spack_env.set('SERIALBOX_ROOT', self.spec['serialbox'].prefix)
 
     def cmake_args(self):
       spec = self.spec
 
       args = []
+
       GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
-      SerialBoxDir = spec['serialbox'].prefix + '/cmake'
       
-      args.append('-DSerialbox_DIR={0}'.format(SerialBoxDir))
       args.append('-DGridTools_DIR={0}'.format(GridToolsDir))  
       args.append('-DCMAKE_BUILD_TYPE=Release')
-      args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
       args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
-      args.append('-DBUILD_TESTING=OFF')
-      args.append('-DBoost_USE_STATIC_LIBS=ON')
-      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
       args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
+      args.append('-DBoost_USE_STATIC_LIBS=ON')
+      args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
+
+    
+      if spec.variants['single-precision'].value:
+        args.append('-DPRECISION=single')
+      else:
+        args.append('-DPRECISION=double')
       
-      if not spec.variants['testing'].value:
-          args.append('-DDYCORE_UNITTEST=OFF')
-      
+      if not spec.variants['test'].value:
+          args.append('-DBUILD_TESTING=OFF')
+      else:
+          args.append('-DBUILD_TESTING=ON')
+          SerialBoxRoot = spec['serialbox'].prefix + '/cmake'
+          args.append('-DSerialbox_DIR={0}'.format(SerialBoxRoot))
+
+      # target=gpu
       if spec.variants['gpu'].value:
-          args.append('-DCUDA_BACKEND=ON')
+          args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
+          args.append('-DCUDA_ARCH=sm_70') # only correct for tsarolla, kescha->sm_37, daint->sm_60
+      # target=cpu
+      else:
+        args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
+
 
       return args
 

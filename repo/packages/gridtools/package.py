@@ -38,22 +38,34 @@ class Gridtools(CMakePackage):
     version('1.0.1', commit='11053321adac080abee0c6d8399ed6a63479bb48')
     version('1.0.0', commit='5dfeace6f20eefa6633102533d5a0e1564361ecf')
 
+    variant('gpu', default=False, description="Target gpu")
+
     depends_on('ncurses')
     depends_on('cmake')
-    depends_on('boost')
+    depends_on('boost@1.67.0')
+    depends_on('mpi')
+    depends_on('cuda', when='+gpu')
 
     def cmake_args(self):
       spec = self.spec
       args = []
-
-      args.append('-DGT_INSTALL_EXAMPLES=OFF')
-      args.append('-DBUILD_TESTING=OFF')
-      args.append('-DBUILD_SHARED_LIBS=OFF')
-      #args.append('-DGT_USE_MPI=ON')
+      
       args.append('-DBoost_NO_BOOST_CMAKE=ON')
-     #args.append('-DCMAKE_BUILD_TYPE:STRING="Release"')
-      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
+      args.append('-DGT_INSTALL_EXAMPLES=OFF')
+      args.append('-DBUILD_SHARED_LIBS=OFF')
+      args.append('-DCMAKE_BUILD_TYPE=Release')
       args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
-     # -DBOOST_ROOT="$DEFAULT_BOOST_ROOT"
+      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
+      args.append('-DBUILD_TESTING=OFF')
+      args.append('-DGT_USE_MPI=ON')
+      args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
+
+      if spec.variants['gpu'].value:
+        args.append('-DCUDA_ARCH=sm_70') # only correct for tsarolla, kescha->sm_37, daint->sm_60
+        args.append('-DGT_CUDA_ARCH=sm_70') # only correct for tsarolla, kescha->sm_37, daint->sm_60
+        args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
+      else:
+        args.append('-DGT_ENABLE_BACKEND_X86=ON')
+
       return args
 
