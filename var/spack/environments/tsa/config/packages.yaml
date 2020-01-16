@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [pgi@19.9, pgi@19.9-gcc, gcc]
+    compiler: [gcc, pgi@19.9, pgi@19.9-gcc]
   cmake:
     modules:
       cmake@3.14.5: cmake/3.14.5

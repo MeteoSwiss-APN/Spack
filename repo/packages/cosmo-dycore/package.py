@@ -39,7 +39,7 @@ class CosmoDycore(CMakePackage):
     
     depends_on('gridtools@1.1.2', when='+gpu')
     depends_on('gridtools@1.1.2 ~gpu', when='~gpu')
-    depends_on('boost@1.67')
+    depends_on('boost@1.67:')
     depends_on('serialbox@2.6.0', when='+test')
     depends_on('mpi')
     depends_on('perl@5.16.3')
@@ -85,6 +85,7 @@ class CosmoDycore(CMakePackage):
       # target=gpu
       if spec.variants['gpu'].value:
         args.append('-DENABLE_CUDA=ON')
+        args.append('-DCUDA_ARCH=sm_70')
         args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:
