@@ -40,7 +40,7 @@ packages:
     compiler: [pgi]
   openmpi:
     paths:
-      ppenmpi@4.0.2: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/OpenMPI/4.0.2-gcccuda-2019b-cuda-10.1
+      openmpi@4.0.2: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/OpenMPI/4.0.2-gcccuda-2019b-cuda-10.1
     compiler: [gcc]
   netcdf-fortran:
     paths:

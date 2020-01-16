@@ -49,6 +49,9 @@ class CosmoDycore(CMakePackage):
         spack_env.set('GRIDTOOLS_ROOT', self.spec['gridtools'].prefix)
         if self.spec.variants['test'].value:
           spack_env.set('SERIALBOX_ROOT', self.spec['serialbox'].prefix)
+        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
+        spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm')
+        spack_env.set('CUDA_ARCH', 'sm_70')
 
     def cmake_args(self):
       spec = self.spec
