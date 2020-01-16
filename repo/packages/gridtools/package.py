@@ -63,13 +63,12 @@ class Gridtools(CMakePackage):
       args.append('-DCMAKE_BUILD_TYPE=Release')
       args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
       args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
+      args.append('-DCUDA_ARCH=sm_70')
       args.append('-DBUILD_TESTING=OFF')
       args.append('-DGT_USE_MPI=ON')
       args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
 
       if spec.variants['gpu'].value:
-        args.append('-DCUDA_ARCH=sm_70') # only correct for tsarolla, kescha->sm_37, daint->sm_60
-        args.append('-DGT_CUDA_ARCH=sm_70') # only correct for tsarolla, kescha->sm_37, daint->sm_60
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
         args.append('-DGT_ENABLE_BACKEND_X86=OFF')
       else:

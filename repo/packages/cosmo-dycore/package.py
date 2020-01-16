@@ -37,8 +37,9 @@ class CosmoDycore(CMakePackage):
     variant('gpu', default=True, description="GPU dycore")
     variant('single-precision', default=False, description='Build with single precision enabled')
     
-    depends_on('gridtools@1.1.2')
-    depends_on('boost')
+    depends_on('gridtools@1.1.2', when='+gpu')
+    depends_on('gridtools@1.1.2 ~gpu', when='~gpu')
+    depends_on('boost@1.67')
     depends_on('serialbox@2.6.0', when='+test')
     depends_on('mpi')
     depends_on('perl@5.16.3')
@@ -66,8 +67,6 @@ class CosmoDycore(CMakePackage):
       args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
       args.append('-DBoost_USE_STATIC_LIBS=ON')
       args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
-      args.append('-DDYCORE_ENABLE_CUDA_AWARE_MPI=ON')
-      args.append('-DENABLE_CUDA=ON')
       args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=OFF')
       args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
     
@@ -85,10 +84,11 @@ class CosmoDycore(CMakePackage):
 
       # target=gpu
       if spec.variants['gpu'].value:
-          args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
-          args.append('-DCUDA_ARCH=sm_70') # only correct for tsarolla, kescha->sm_37, daint->sm_60
+        args.append('-DENABLE_CUDA=ON')
+        args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:
+        args.append('-DENABLE_CUDA=OFF')
         args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
 
 
