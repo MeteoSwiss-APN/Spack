@@ -42,6 +42,7 @@ class CosmoDycore(CMakePackage):
     depends_on('serialbox@2.6.0', when='+test')
     depends_on('mpi')
     depends_on('perl@5.16.3')
+    depends_on('slurm')
 
     root_cmakelists_dir='dycore'
     
@@ -51,7 +52,6 @@ class CosmoDycore(CMakePackage):
           spack_env.set('SERIALBOX_ROOT', self.spec['serialbox'].prefix)
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
         spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm')
-        spack_env.set('CUDA_ARCH', 'sm_70')
 
     def cmake_args(self):
       spec = self.spec

@@ -58,3 +58,13 @@ packages:
     paths:
       netcdf-c@4.7.0 : /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b/include
     compiler: [gcc]
+  craype-x85-skylake:
+    modules:
+      craype-x86-skylake: craype-x86-skylake
+  craype-network-infiniband:
+    modules:
+      craype-network-infiniband: craype-network-infiniband
+  slurm:
+    modules:
+      slurm@19.05.04: slurm/19.05.04
+

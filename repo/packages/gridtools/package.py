@@ -45,6 +45,11 @@ class Gridtools(CMakePackage):
     depends_on('boost@1.67.0')
     depends_on('mpi')
     depends_on('cuda', when='+gpu')
+    depends_on('slurm')
+    
+    def setup_environment(self, spack_env, run_env):
+        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
+        spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm')
 
     def cmake_args(self):
       spec = self.spec
