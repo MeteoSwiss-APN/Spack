@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [gcc, pgi@19.9, pgi@19.9-gcc]
+    compiler: [pgi@19.9, pgi@19.9-gcc, gcc]
   cmake:
     modules:
       cmake@3.14.5: cmake/3.14.5
@@ -23,47 +23,40 @@ packages:
     compiler: []
   cuda:
     modules:
-      cuda@10.1.243: cuda/10.1.243
+      cuda@10.1.243%pgi: cuda/10.1.243
+      cuda@10.1.243%gcc: PrgEnv-gnu/19.2
     buildable: true
     version: []
     target: []
     providers: {}
     paths: {}
-    compiler: []
-  ncurses:
-    compiler: [gcc]
-  grib-api:
-    version: [1.20.0.2]
   openmpi:
     paths:
-      openmpi@4.0.2: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/OpenMPI/4.0.2-PGI-19.9-GCC-8.3.0-cuda-10.1
-    compiler: [pgi]
-  openmpi:
-    paths:
-      openmpi@4.0.2: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/OpenMPI/4.0.2-gcccuda-2019b-cuda-10.1
-    compiler: [gcc]
+      openmpi@4.0.2%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/OpenMPI/4.0.2-PGI-19.9-GCC-8.3.0-cuda-10.1
+      openmpi@4.0.2%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/OpenMPI/4.0.2-gcccuda-2019b-cuda-10.1
   netcdf-fortran:
     paths:
-      netcdf-fortran@4.4.5: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0
-    compiler: [pgi]
-  netcdf-fortran:
-    paths:
-      netcdf-fortran@4.4.5: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b/include
-    compiler: [gcc]  
+      netcdf-fortran@4.4.5%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0
+      netcdf-fortran@4.4.5%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b/include
   netcdf-c:
     paths:
-      netcdf-c@4.7.0 : /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0
-    compiler: [pgi]
-  netcdf-c:
+      netcdf-c@4.7.0%pgi : /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0
+      netcdf-c@4.7.0%gcc : /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b/include
+  perl:
+    paths: 
+      perl@5.16: /usr/bin/perl
+  m4:
+    paths: 
+      m4@1.4.16: /usr/bin/m4
+  automake:
     paths:
-      netcdf-c@4.7.0 : /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b/include
-    compiler: [gcc]
-  craype-x85-skylake:
-    modules:
-      craype-x86-skylake: craype-x86-skylake
-  craype-network-infiniband:
-    modules:
-      craype-network-infiniband: craype-network-infiniband
+      automake@1.13.4: /usr/bin/automake
+  libtool:
+    paths:
+      libtool@2.4.2: /usr/bin/libtool
+  autoconf:
+    paths:
+      autoconf@2.69: /usr/bin/autoconf
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04

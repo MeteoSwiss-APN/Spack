@@ -35,6 +35,7 @@ class Cosmo(MakefilePackage):
     depends_on('jasper@1.900.1') # grib-api for COSMO needs extactly this version
     depends_on('perl@5.16.3')
     depends_on('gridtools')
+    depends_on('openmpi', when='+gpu')
     depends_on('claw%gcc@8.3.0', when='+claw')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
