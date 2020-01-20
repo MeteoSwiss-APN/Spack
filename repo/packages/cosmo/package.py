@@ -78,6 +78,7 @@ class Cosmo(MakefilePackage):
         env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
         # sets CLAW paths if variant +claw
         if '+claw' in self.spec:
+            env['CLAWDIR'] = '{0}'.format(spec['claw'].prefix) 
             env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
             env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/' 
         with working_dir(self.build_directory):
