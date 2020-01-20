@@ -29,7 +29,10 @@ class Claw(CMakePackage):
     depends_on('ant@1.9:')
     depends_on('libxml2')
     depends_on('bison')
-
+    
+    def setup_environment(self, spack_env, run_env):
+      if self.spec.architecture.target == 'skylake_avx512':
+        spack_env.set('YACC', 'bison -y')
     def cmake_args(self):
         args = []
         spec = self.spec
