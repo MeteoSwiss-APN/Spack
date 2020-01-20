@@ -40,7 +40,7 @@ class CosmoDycore(CMakePackage):
     depends_on('gridtools@1.1.2', when='+gpu')
     depends_on('gridtools@1.1.2 ~gpu', when='~gpu')
     depends_on('boost@1.67:')
-    depends_on('serialbox@2.6.0', when='+test')
+    depends_on('serialbox@2.6.0%gcc', when='+test')
     depends_on('openmpi')
     depends_on('slurm')
 

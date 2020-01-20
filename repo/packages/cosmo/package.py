@@ -23,19 +23,14 @@ class Cosmo(MakefilePackage):
     
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
-#    depends_on('netcdf', when='+netcdf')
-    # depends_on('dycore') TODO we need to target the exactly same version .. smth like that
-#    depends_on('cosmo-dycore@5.05a', when='+cppdycore', when='@5.05a')
-    depends_on('cuda')
-    depends_on('cosmo-dycore%gcc', when='+cppdycore')
-    depends_on('cosmo-dycore%gcc +test', when='+dycoretest')
+    #depends_on('cuda')
+    depends_on('cosmo-dycore%gcc +gpu', when='+cppdycore')
+    depends_on('cosmo-dycore%gcc +gpu +test', when='+dycoretest')
     depends_on('libgrib1%pgi@19.9-gcc')
     depends_on('cosmo-grib-api')
-#    depends_on('grib-api@1.13.1 +fortran jp2k=jasper')
-    depends_on('jasper@1.900.1') # grib-api for COSMO needs extactly this version
+    depends_on('jasper@1.900.1')
     depends_on('perl@5.16.3')
     depends_on('gridtools')
-    depends_on('openmpi', when='+gpu')
     depends_on('claw%gcc@8.3.0', when='+claw')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
@@ -50,8 +45,6 @@ class Cosmo(MakefilePackage):
 
 
     build_directory = 'cosmo/ACC'
-
-    #patch('install_target.patch')
 
     def setup_environment(self, spack_env, run_env):
         spack_env.set('LIBNAME', 'grib1')
@@ -84,7 +77,6 @@ class Cosmo(MakefilePackage):
         env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
         env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
         env['MPI_ROOT'] = spec['openmpi'].prefix
-        env['CUDA_ROOT'] = spec['cuda'].prefix
         # sets CLAW paths if variant +claw
         if '+claw' in self.spec:
             env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)

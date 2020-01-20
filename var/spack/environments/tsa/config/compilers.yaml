@@ -62,13 +62,13 @@ compilers:
     extra_rpaths: []
     flags: {}
     modules:
-      - PrgEnv-gnu/19.2
+    - PrgEnv-pgi/19.2
     operating_system: rhel7
     paths:
       cc: gcc
       cxx: g++
-      f77: gfortran
-      fc: gfortran
+      f77: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
+      fc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
     spec: gcc@8.3.0
     target: any
 - compiler:
@@ -81,8 +81,8 @@ compilers:
     paths:
       cc: gcc
       cxx: g++
-      f77: pgfortran
-      fc: pgfortran
+      f77: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgfortran
+      fc: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgfortran
     spec: pgi@19.9
     target: any
 - compiler:

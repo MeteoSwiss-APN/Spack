@@ -23,8 +23,7 @@ packages:
     compiler: []
   cuda:
     modules:
-      cuda@10.1.243%pgi: cuda/10.1.243
-      cuda@10.1.243%gcc: PrgEnv-gnu/19.2
+      cuda@10.1.243:  PrgEnv-pgi/19.9
     buildable: true
     version: []
     target: []
@@ -57,6 +56,9 @@ packages:
   autoconf:
     paths:
       autoconf@2.69: /usr/bin/autoconf
+  bison:
+    paths:
+      bison@3.0.4: /usr/bin/bison
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04

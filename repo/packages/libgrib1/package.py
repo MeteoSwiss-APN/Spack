@@ -49,7 +49,7 @@ class Libgrib1(MakefilePackage):
             if self.compiler.name == 'gcc':
                 Makefilename += "gnu"
             else:
-                Makefilename += self.compiler.name
+                Makefilename += "pgi"
             options = ['-f', Makefilename]
             env['PWD'] = '.' 
             make(*options)
