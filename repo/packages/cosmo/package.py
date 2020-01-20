@@ -23,15 +23,16 @@ class Cosmo(MakefilePackage):
     
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
-    #depends_on('cuda')
-    depends_on('cosmo-dycore%gcc +gpu', when='+cppdycore')
-    depends_on('cosmo-dycore%gcc +gpu +test', when='+dycoretest')
+    depends_on('cuda')
+    depends_on('cosmo-dycore%gcc +gpu', when='+gpu')
+    depends_on('cosmo-dycore%gcc ~gpu', when='~gpu')
+    depends_on('cosmo-dycore%gcc +test', when='+dycoretest')
+    depends_on('cosmo-dycore%gcc', when='+cppdycore')
     depends_on('libgrib1%pgi@19.9-gcc')
     depends_on('cosmo-grib-api')
     depends_on('jasper@1.900.1')
     depends_on('perl@5.16.3')
-    depends_on('gridtools')
-    depends_on('claw%gcc@8.3.0', when='+claw')
+    depends_on('claw', when='+claw')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=False, description='Compile Dycore unittest')
@@ -48,7 +49,6 @@ class Cosmo(MakefilePackage):
 
     def setup_environment(self, spack_env, run_env):
         spack_env.set('LIBNAME', 'grib1')
-        spack_env.set('YACC', 'bison -y')
 
     @property
     def build_targets(self):
@@ -76,41 +76,31 @@ class Cosmo(MakefilePackage):
         env['BOOST_ROOT'] = spec['boost'].prefix
         env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
         env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
-        env['MPI_ROOT'] = spec['openmpi'].prefix
         # sets CLAW paths if variant +claw
         if '+claw' in self.spec:
             env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
             env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/' 
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            makefile.filter('INSTALL_PREFIX=', 'INSTALL_PREFIX={0}'.format(prefix))            
+            makefile.filter('INSTALL_PREFIX=', 'INSTALL_PREFIX={0}'.format(prefix))
+            OptionsFileName='Options'
+            if self.spec.architecture.target == 'skylake_avx512':
+                OptionsFileName += '.arolla'
             if self.compiler.name == 'gcc':
-                makefile.filter('/Options',  '/Options.arolla.gnu.cpu')
-                opcomp = FileFilter('Options.arolla.gnu.cpu')
+                OptionsFileName += '.gcc'
             elif self.compiler.name == 'pgi':
-                makefile.filter('/Options',  '/Options.arolla.pgi.gpu')
-                opcomp = FileFilter('Options.arolla.pgi.gpu')
-            elif self.compiler.name == 'intel':
-                makefile.filter('/Options',  '/Options.arolla.cray.cpu')
-                opcomp = FileFilter('Options.arolla.cray.cpu')
-                anotherfilter = FileFilter('Options.cray.cpu')
-                anotherfilter.filter('-eF', '-fpp')
+                OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
-                makefile.filter('/Options',  '/Options.daint.cray.gpu')
-                opcomp = FileFilter('Options.cray.cpu')
-            opcomp.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
-            opcomp.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
-            #opcomp.filter('F90 *=.*','F90 = ftn')
-            """
-            optionsfilter = FileFilter('Options.lib.cpu')
-            optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['cosmo-grib-api'].prefix))
-            optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{0}/libjasper/lib -ljasper'.format(spec['cosmo-grib-api'].prefix))
-            optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1'.format(spec['libgrib1'].prefix))
-            optionsfilter.filter('GRIDTOOLS =.*',  'GRIDTOOLS = {0}'.format(spec['gridtools'].prefix))
-            optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools'].prefix))
-            optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLI = -I{0}/include/gridtools'.format(spec['gridtools'].prefix))
-            """
-            optionsfilter = FileFilter('Options.lib.gpu')
+                OptionsFileName += '.cray'
+            if spec.variants['gpu'].value:
+                OptionsFileName += '.gpu'
+                optionsfilter = FileFilter('Options.lib.gpu')
+            else:
+                OptionsFileName += '.cpu'
+                optionsfilter = FileFilter('Options.lib.cpu')
+            makefile.filter('/Options', '/' + OptionsFileName)
+            opcomp = FileFilter(OptionsFileName)
+    
             optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['cosmo-grib-api'].prefix))
             optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{1}/libjasper/lib -ljasper'.format(spec['cosmo-grib-api'].prefix, spec['jasper'].prefix))
             optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1_{1}'.format(spec['libgrib1'].prefix, self.compiler.name))

@@ -45,12 +45,16 @@ class Libgrib1(MakefilePackage):
             'LIBRARY_DIR = $(INSTALL_DIR)/lib',
         ]
         with working_dir(self.build_directory):
-            Makefilename = "Makefile.arolla."
+            MakeFileName = 'Makefile'
+            if self.spec.architecture.target == 'skylake_avx512':
+                MakeFileName += '.arolla'
             if self.compiler.name == 'gcc':
-                Makefilename += "gnu"
-            else:
-                Makefilename += "pgi"
-            options = ['-f', Makefilename]
+                MakeFileName += '.gnu'
+            elif self.compiler.name == 'pgi':
+                MakeFileName += '.pgi'
+            elif self.compiler.name == 'cce':
+                MakeFileName += '.cray'
+            options = ['-f', MakeFileName]
             env['PWD'] = '.' 
             make(*options)
 
