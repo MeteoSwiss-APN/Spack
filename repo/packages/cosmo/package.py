@@ -25,16 +25,15 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-c')
     depends_on('cuda')
     depends_on('cosmo-dycore%gcc +gpu', when='+gpu')
-    depends_on('cosmo-dycore%gcc ~gpu', when='~gpu')
     depends_on('cosmo-dycore%gcc +test', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc', when='+cppdycore')
+   # depends_on('cosmo-dycore%gcc', when='+cppdycore')
     depends_on('libgrib1%pgi@19.9-gcc')
     depends_on('cosmo-grib-api')
     depends_on('jasper@1.900.1')
     depends_on('perl@5.16.3')
     depends_on('claw', when='+claw')
 
-    variant('cppdycore', default=True, description='Build with the C++ DyCore')
+   # variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=False, description='Compile Dycore unittest')
     variant('gpu', default=True, description='Build the GPU version of COSMO')
     variant('serialization', default=False, description='Build with serialization enabled')
@@ -55,7 +54,7 @@ class Cosmo(MakefilePackage):
         build = []
         if '+single-precision' in self.spec:
             build.append('SINGLEPRECISION=1')
-        if '+cppdycore' in self.spec:
+        if '+gpu' in self.spec:
             build.append('CPP_GT_DYCORE=1')
         if '+claw' in self.spec:
             build.append('CLAW=1')
@@ -73,9 +72,10 @@ class Cosmo(MakefilePackage):
         return build
 
     def edit(self, spec, prefix):
-        env['BOOST_ROOT'] = spec['boost'].prefix
-        env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
-        env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
+        if '+gpu' in self.spec:
+          env['BOOST_ROOT'] = spec['boost'].prefix
+          env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
+          env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
         # sets CLAW paths if variant +claw
         if '+claw' in self.spec:
             env['CLAWDIR'] = '{0}'.format(spec['claw'].prefix) 
@@ -93,24 +93,25 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
-            if spec.variants['gpu'].value:
+            if '+gpu' in self.spec:
                 OptionsFileName += '.gpu'
                 optionsfilter = FileFilter('Options.lib.gpu')
             else:
                 OptionsFileName += '.cpu'
                 optionsfilter = FileFilter('Options.lib.cpu')
             makefile.filter('/Options', '/' + OptionsFileName)
-            opcomp = FileFilter(OptionsFileName)
     
             optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['cosmo-grib-api'].prefix))
             optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{1}/libjasper/lib -ljasper'.format(spec['cosmo-grib-api'].prefix, spec['jasper'].prefix))
             optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1_{1}'.format(spec['libgrib1'].prefix, self.compiler.name))
             optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
-            optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix)) 
-            optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools'].prefix))
-            optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLSI = -I{0}/include/gridtools'.format(spec['gridtools'].prefix))  
-            optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_double -ldycore_base_bindings_double'))
-            optionsfilter.filter('DYCOREGTI =.*',  'DYCOREGTI = -I{0}'.format(spec['cosmo-dycore'].prefix))
+            optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
+
+            if '+gpu' in self.spec:
+                optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools'].prefix))
+                optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLSI = -I{0}/include/gridtools'.format(spec['gridtools'].prefix))  
+                optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_double -ldycore_base_bindings_double'))
+                optionsfilter.filter('DYCOREGTI =.*',  'DYCOREGTI = -I{0}'.format(spec['cosmo-dycore'].prefix))
 
             #TODO if variant serialization:
             """

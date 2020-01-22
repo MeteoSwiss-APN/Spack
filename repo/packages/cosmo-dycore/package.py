@@ -37,7 +37,7 @@ class CosmoDycore(CMakePackage):
     variant('gpu', default=True, description="GPU dycore")
     variant('single-precision', default=False, description='Build with single precision enabled')
     
-    depends_on('gridtools@1.1.2', when='+gpu')
+    depends_on('gridtools@1.1.2 +gpu', when='+gpu')
     depends_on('gridtools@1.1.2 ~gpu', when='~gpu')
     depends_on('boost@1.67:')
     depends_on('serialbox@2.6.0%gcc', when='+test')
