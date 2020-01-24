@@ -23,7 +23,8 @@ packages:
     compiler: []
   cuda:
     modules:
-      cuda@10.1.243:  PrgEnv-pgi/19.9
+      cuda@10.1.243%pgi:  PrgEnv-pgi/19.9
+      cuda@10.1.243%gcc: cuda/10.1.243
     buildable: true
     version: []
     target: []
@@ -43,22 +44,28 @@ packages:
       netcdf-c@4.7.0%gcc : /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b/include
   perl:
     paths: 
-      perl@5.16: /usr/bin/perl
+      perl@5.16: /usr
   m4:
     paths: 
-      m4@1.4.16: /usr/bin/m4
+      m4@1.4.16: /usr
   automake:
     paths:
-      automake@1.13.4: /usr/bin/automake
+      automake@1.13.4: /usr
   libtool:
     paths:
-      libtool@2.4.2: /usr/bin/libtool
+      libtool@2.4.2: /usr
   autoconf:
     paths:
-      autoconf@2.69: /usr/bin/autoconf
+      autoconf@2.69: /usr
   bison:
     paths:
-      bison@3.0.4: /usr/bin/bison
+      bison@3.0.4: /usr
+  ncurses:
+    paths:
+      ncurses@6.1: /usr
+  jasper:
+    paths:
+      jasper@2.0.14: /usr
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04
