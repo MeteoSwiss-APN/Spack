@@ -4,4 +4,26 @@ modules:
   tcl:
     naming_scheme: '${PACKAGE}/${VERSION}'
     hash_length: 0
-    blacklist: ['environment-modules']
+    blacklist: ['cmake']
+    boost:
+      environment:
+        set:
+          '$BOOST_ROOT': '${PREFIX}'
+    gridtools:
+      environment:
+        set:
+          '$GRIDTOOLS_DIR': '${PREFIX}'
+    cosmo-dycore:
+      environment:
+        set:
+          '$DYCOREGT_DIR': '${PREFIX}'
+    serialbox:
+      environment:
+        set:
+          '$SERIALBOX_DIR': '${PREFIX}'
+    claw:
+      environment:
+        set:
+          '$CLAWDIR': '${PREFIX}'
+          '$CLAWFC': '${PREFIX}/bin/clawfc'
+          '$CLAWXMODSPOOL': '/project/c14/install/omni-xmod-pool/'
