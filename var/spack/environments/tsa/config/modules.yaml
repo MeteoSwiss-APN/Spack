@@ -1,29 +1,42 @@
 modules:
   enable:
-    - tcl
-  tcl:
+    - lmod
+  lmod: 
+    all:
+      autoload: 'direct'
     naming_scheme: '${PACKAGE}/${VERSION}'
     hash_length: 0
-    blacklist: ['cmake']
+    blacklist: ['cuda', 'cmake', 'slurm']
     boost:
       environment:
         set:
-          '$BOOST_ROOT': '${PREFIX}'
+          BOOST_ROOT: '${PREFIX}'
     gridtools:
       environment:
         set:
-          '$GRIDTOOLS_DIR': '${PREFIX}'
+          GRIDTOOLS_DIR: '${PREFIX}'
+          GRIDTOOLS_ROOT: '${PREFIX}' 
     cosmo-dycore:
       environment:
         set:
-          '$DYCOREGT_DIR': '${PREFIX}'
+          DYCOREGT_DIR: '${PREFIX}'
+
     serialbox:
       environment:
         set:
-          '$SERIALBOX_DIR': '${PREFIX}'
+          SERIALBOX_DIR: '${PREFIX}'
+          SERIALBOX_ROOT: '${PREFIX}'
     claw:
       environment:
         set:
-          '$CLAWDIR': '${PREFIX}'
-          '$CLAWFC': '${PREFIX}/bin/clawfc'
-          '$CLAWXMODSPOOL': '/project/c14/install/omni-xmod-pool/'
+          CLAWDIR: '${PREFIX}'
+          CLAWFC: '${PREFIX}/bin/clawfc'
+          CLAWXMODSPOOL: '/project/c14/install/omni-xmod-pool/'
+    ant:
+      environment:
+        set:
+         ANT_HOME: '${PREFIX}'
+    bison:
+      environment:
+        set:
+          YACC: 'bison -y'

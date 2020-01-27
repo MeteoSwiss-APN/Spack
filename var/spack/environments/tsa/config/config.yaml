@@ -6,7 +6,7 @@ config:
   template_dirs:
     - $spack/templates
   module_roots:
-    tcl:  *modules_install_path
+    lmod:  *modules_install_path
   build_stage:
     - $spack/var/spack/stage
   install_path_scheme: '{name}/{version}/{compiler.name}'
