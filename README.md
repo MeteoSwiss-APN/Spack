@@ -1,6 +1,76 @@
+# The Meteoschweiz Spack Deployment
+
+Official Spack documentation [below](#-spack).
+
+## Building software on tsa
+
+First git clone the Meteoschweiz spack fork and source the spack file under spack/share/spack in order to use it
+
+    $ git clone https://github.com/elsagermann/spack.git
+    $ cd spack/share/spack
+    $ . setup-env.sh
+ 
+Then activate the environment machine (tsa, daint soon available)
+
+    $ spack env activate <machine>
+    
+You are then able to build any packages available (_spack list_ to print the whole list of available packages)
+
+    $ spack install <package>@<version>%<compiler> +<variants>
+ 
+Ex:
+    
+    $ spack install cosmo@master%pgi +gpu
+    
+
+This will clone the package, build it and then install the chosen package and all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept. Module files are also created during this process and install under _/scratch/$USER/modules/_
+
+## Dev-building software on tsa
+
+If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install 
+    
+    $ cd <package_base_directory>
+    $ spack dev-build <package>@<version>%<compiler> +<variants>
+    
+The package, its dependencies and its modules will be still installed under _/scratch/$USER/install/tsa_ & _/scratch/$USER/modules/_
+      
+## Spack info
+
+Use the spack command
+
+    $ spack info <package>
+    
+in order to get a list of all possible building configuration available such as: version available, list of dependencies and variants. Variants are a key-feature of spack since it tells it which build configuration we want (i.e COSMO with target gpu or cpu)
+
+## Spack edit
+
+Use the spack command
+
+    $ spack edit <package>
+
+in order to open the correspondig _package.py_ file and edit it directly
+
+## Machine specific config files
+
+Are available under _spack/var/spack/environements/`<machine>`_. Their structure is:
+ 
+<ul>
+    <li>spack.yaml (spack environment file, describes the set of packages to be installed, and includes the below machine config files)</li>
+    <li>config:</li>
+        <ul>
+            <li>
+	    -compilers.yaml (all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling)</li>
+            <li>-packages.yaml (all info about the already installed dependencies, i.e their module names or paths)</li>
+            <li>-modules.yaml (all info about the created modules, i.e which env variable or modules should be set once loaded)</li>
+            <li>-config.yaml (specifies the main installation path and the main module installation path, where to find the binaries etc.)</li>
+        </ul>
+    </li>
+</ul>
+
 # <img src="https://cdn.rawgit.com/spack/spack/develop/share/spack/logo/spack-logo.svg" width="64" valign="middle" alt="Spack"/> Spack
 
 [![Build Status](https://travis-ci.org/spack/spack.svg?branch=develop)](https://travis-ci.org/spack/spack)
+[![Linux Builds](https://github.com/spack/spack/workflows/linux%20builds/badge.svg)](https://github.com/spack/spack/actions)
 [![codecov](https://codecov.io/gh/spack/spack/branch/develop/graph/badge.svg)](https://codecov.io/gh/spack/spack)
 [![Read the Docs](https://readthedocs.org/projects/spack/badge/?version=latest)](https://spack.readthedocs.io)
 [![Slack](https://spackpm.herokuapp.com/badge.svg)](https://spackpm.herokuapp.com)
