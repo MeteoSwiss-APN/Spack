@@ -67,6 +67,36 @@ Are available under _spack/var/spack/environements/`<machine>`_. Their structure
     </li>
 </ul>
 
+# <img src="https://cdn.rawgit.com/spack/spack/develop/share/spack/logo/spack-logo.svg" width="64" valign="middle" alt="Spack"/> Spack
+
+[![Build Status](https://travis-ci.org/spack/spack.svg?branch=develop)](https://travis-ci.org/spack/spack)
+[![Linux Builds](https://github.com/spack/spack/workflows/linux%20builds/badge.svg)](https://github.com/spack/spack/actions)
+[![codecov](https://codecov.io/gh/spack/spack/branch/develop/graph/badge.svg)](https://codecov.io/gh/spack/spack)
+[![Read the Docs](https://readthedocs.org/projects/spack/badge/?version=latest)](https://spack.readthedocs.io)
+[![Slack](https://spackpm.herokuapp.com/badge.svg)](https://spackpm.herokuapp.com)
+
+Spack is a multi-platform package manager that builds and installs
+multiple versions and configurations of software. It works on Linux,
+macOS, and many supercomputers. Spack is non-destructive: installing a
+new version of a package does not break existing installations, so many
+configurations of the same package can coexist.
+
+Spack offers a simple "spec" syntax that allows users to specify versions
+and configuration options. Package files are written in pure Python, and
+specs allow package authors to write a single script for many different
+builds of the same package.  With Spack, you can build your software
+*all* the ways you want to.
+
+See the
+[Feature Overview](http://spack.readthedocs.io/en/latest/features.html)
+for examples and highlights.
+
+To install spack and your first package, make sure you have Python.
+Then:
+
+    $ git clone https://github.com/spack/spack.git
+    $ cd spack/bin
+    $ ./spack install zlib
 
 Documentation
 ----------------
