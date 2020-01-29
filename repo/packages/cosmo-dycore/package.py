@@ -27,7 +27,8 @@ from spack import *
 
 class CosmoDycore(CMakePackage):
     """FIXME: Put a proper description of your package here."""
-
+    
+    homepage = "https://github.com/COSMO-ORG/cosmo/tree/master/dycore"
     git      = "git@github.com:COSMO-ORG/cosmo.git"
     maintainers = ['elsagermann']
     

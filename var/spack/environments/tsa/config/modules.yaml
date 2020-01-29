@@ -1,7 +1,7 @@
 modules:
   enable:
-    - lmod
-  lmod: 
+    - tcl
+  tcl: 
     all:
       autoload: 'direct'
     naming_scheme: '${PACKAGE}/${VERSION}'
@@ -40,3 +40,8 @@ modules:
       environment:
         set:
           YACC: 'bison -y'
+    cuda:
+      environment:
+        set:
+          UCX_MEMTYPE_CACHE: 'n'
+          UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm'

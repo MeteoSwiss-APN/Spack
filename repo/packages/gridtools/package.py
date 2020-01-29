@@ -25,7 +25,8 @@ from spack import *
 
 class Gridtools(CMakePackage):
     """The GridTools framework is a set of libraries and utilities to develop performance portable applications in the area of weather and climate."""
-
+    
+    homepage = "https://github.com/GridTools/gridtools.git"
     git = "git@github.com:GridTools/gridtools.git"
 
     maintainers = ['elsagermann']
@@ -38,7 +39,7 @@ class Gridtools(CMakePackage):
     version('1.0.1', commit='11053321adac080abee0c6d8399ed6a63479bb48')
     version('1.0.0', commit='5dfeace6f20eefa6633102533d5a0e1564361ecf')
 
-    variant('gpu', default=True, description="Target gpu")
+    variant('gpu', default=True, description="Build with target gpu")
 
     depends_on('ncurses')
     depends_on('cmake')
@@ -46,10 +47,6 @@ class Gridtools(CMakePackage):
     depends_on('openmpi')
     depends_on('cuda', when='+gpu')
     depends_on('slurm')
-    
-    def setup_environment(self, spack_env, run_env):
-        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm')
 
     def cmake_args(self):
       spec = self.spec
@@ -66,7 +63,6 @@ class Gridtools(CMakePackage):
       args.append('-DCUDA_ARCH=sm_70')
       args.append('-DBUILD_TESTING=OFF')
       args.append('-DGT_USE_MPI=ON')
-      args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
 
       if spec.variants['gpu'].value:
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
