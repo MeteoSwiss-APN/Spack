@@ -23,7 +23,7 @@ Ex:
     $ spack install cosmo@master%pgi +gpu
     
 
-This will then git clone the package, build it and then install the chosen package and all its dependencies under /scratch/$USER/install/tsa (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept Module files are also created during this process and install under /scratch/$USER/modules/.
+This will then git clone the package, build it and then install the chosen package and all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept Module files are also created during this process and install under _/scratch/$USER/modules/_.
 
 ## Dev-building software on tsa
 
@@ -32,7 +32,7 @@ If you do not want to git clone the source of the package you want to install, e
     $ cd <package_base_directory>
     $ spack _dev-build_ <package>@<version>%<compiler> +<variants>
     
-The package, its dependencies and its modules will be still installed under /scratch/$USER/install/tsa & /scratch/$USER/modules/
+The package, its dependencies and its modules will be still installed under _/scratch/$USER/install/tsa_ & _/scratch/$USER/modules/_
       
 ## Spack info
 
