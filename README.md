@@ -30,7 +30,7 @@ This will then git clone the package, build it and then install the chosen packa
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install 
     
     $ cd <package_base_directory>
-    $ spack _dev-build_ <package>@<version>%<compiler> +<variants>
+    $ spack dev-build <package>@<version>%<compiler> +<variants>
     
 The package, its dependencies and its modules will be still installed under _/scratch/$USER/install/tsa_ & _/scratch/$USER/modules/_
       
