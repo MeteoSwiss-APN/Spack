@@ -41,13 +41,13 @@ class Gridtools(CMakePackage):
     version('1.0.0', commit='5dfeace6f20eefa6633102533d5a0e1564361ecf')
 
     variant('gpu', default=True, description="Build with target gpu")
+    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
 
     depends_on('ncurses')
     depends_on('cmake')
     depends_on('boost@1.67.0:')
     depends_on('openmpi')
     depends_on('cuda', when='+gpu')
-    depends_on('slurm')
 
     def cmake_args(self):
       spec = self.spec
@@ -61,7 +61,7 @@ class Gridtools(CMakePackage):
       args.append('-DCMAKE_BUILD_TYPE=Release')
       args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
       args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
-      args.append('-DCUDA_ARCH=sm_70')
+      args.append('-DCUDA_ARCH={0}'.format(self.spec.variants['cuda_arch'].value))
       args.append('-DBUILD_TESTING=OFF')
       args.append('-DGT_USE_MPI=ON')
 

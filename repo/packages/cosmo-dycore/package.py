@@ -36,14 +36,14 @@ class CosmoDycore(CMakePackage):
 
     variant('test', default=False, description="Compile Dycore unittests")
     variant('gpu', default=True, description="GPU dycore")
-    variant('single-precision', default=False, description='Build with single precision enabled')
+    variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
+    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
     
     depends_on('gridtools@1.1.3 +gpu', when='+gpu')
     depends_on('gridtools@1.1.3 ~gpu', when='~gpu')
     depends_on('boost@1.67:')
     depends_on('serialbox@2.6.0%gcc', when='+test')
     depends_on('openmpi')
-    depends_on('slurm')
 
     root_cmakelists_dir='dycore'
     
@@ -70,7 +70,7 @@ class CosmoDycore(CMakePackage):
       args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=OFF')
       args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
     
-      if spec.variants['single-precision'].value:
+      if spec.variants['real_type'].value == 'float':
         args.append('-DPRECISION=single')
       else:
         args.append('-DPRECISION=double')
@@ -85,7 +85,7 @@ class CosmoDycore(CMakePackage):
       # target=gpu
       if spec.variants['gpu'].value:
         args.append('-DENABLE_CUDA=ON')
-        args.append('-DCUDA_ARCH=sm_70')
+        args.append('-DCUDA_ARCH={0}'.format(self.spec.variants['cuda_arch'].value))
         args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:

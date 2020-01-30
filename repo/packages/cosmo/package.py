@@ -24,24 +24,26 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('cuda')
-    depends_on('cosmo-dycore%gcc +gpu', when='+gpu')
-    depends_on('cosmo-dycore%gcc +test', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc', when='+cppdycore')
+    depends_on('cosmo-dycore +gpu', when='+gpu')
+    depends_on('cosmo-dycore +test', when='+dycoretest')
+    depends_on('cosmo-dycore', when='+cppdycore')
+    depends_on('cosmo-dycore real_type=float', when='real_type=float +cppdycore')
+    depends_on('cosmo-dycore real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('openmpi', when='+serialize')
-    depends_on('libgrib1%pgi@19.9-gcc')
+    depends_on('libgrib1%gcc')
     depends_on('cosmo-grib-api')
     depends_on('jasper@1.900.1:')
     depends_on('perl@5.16')
     depends_on('claw', when='+claw')
 
-   # variant('cppdycore', default=True, description='Build with the C++ DyCore')
+    variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=False, description='Compile Dycore unittest')
     variant('gpu', default=True, description='Build the GPU version of COSMO')
     variant('serialize', default=False, description='Build with serialization enabled')
-    variant('parallel', default=True, description='Build parallel COSMO') #TODO enable
+    variant('parallel', default=True, description='Build parallel COSMO')
     variant('debug', default=False, description='Build debug mode')
-    variant('single-precision', default=False, description='Build with single precision enabled')
+    variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
 
 
@@ -54,7 +56,7 @@ class Cosmo(MakefilePackage):
     @property
     def build_targets(self):
         build = []
-        if '+single-precision' in self.spec:
+        if self.spec.variants['real_type'].value == 'float':
             build.append('SINGLEPRECISION=1')
         if '+gpu' in self.spec:
             build.append('CPP_GT_DYCORE=1')
@@ -114,16 +116,16 @@ class Cosmo(MakefilePackage):
             optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
             optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
 
-            if '+gpu' in self.spec:
+            if '+gpu' in spec:
                 optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools'].prefix))
                 optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLSI = -I{0}/include/gridtools'.format(spec['gridtools'].prefix))
-                if '+single-precision' in self.spec:
+                if spec.variants['real_type'].value == 'float':
                     optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_float -ldycore_base_bindings_float'))
                 else:
                     optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_double -ldycore_base_bindings_double'))
                 optionsfilter.filter('DYCOREGTI =.*',  'DYCOREGTI = -I{0}'.format(spec['cosmo-dycore'].prefix))
 
-            if '+serialize' in self.spec:
+            if '+serialize' in spec:
                 optionsfilter.filter('MPII     =.*',  'MPII     = -I{0}/include'.format(spec['openmpi'].prefix))
                 optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpi -lmpi_cxx'.format(spec['openmpi'].prefix))
                 optionsfilter.filter('SERIALBOXI =.*',  'SERIALBOXI = -I{0}/include/'.format(spec['serialbox'].prefix))
