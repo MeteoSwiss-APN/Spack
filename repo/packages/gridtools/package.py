@@ -3,23 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install gridtools-git
-#
-# You can edit this file again by typing:
-#
-#     spack edit gridtools-git
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
-
 from spack import *
 
 
@@ -39,9 +22,17 @@ class Gridtools(CMakePackage):
     version('1.0.2', commit='2d42ea7d7639de1b52a2106e049a21cfea7192ea')
     version('1.0.1', commit='11053321adac080abee0c6d8399ed6a63479bb48')
     version('1.0.0', commit='5dfeace6f20eefa6633102533d5a0e1564361ecf')
-
-    variant('gpu', default=True, description="Build with target gpu")
+    
+    variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
+    variant('shared_libs', default=False, description="Build shared librairies")
+    variant('install_examples', default=False, description="Build with examples")
+    variant('build_testing', default=False, description="Build with tests")
+    variant('gpu', default=True, description="Build with target gpu")
+    variant('use_mpi', default=True, description="Build with using mpi")
+    variant('no_boost_cmake', default=True, description="Build with no boost for CMake")
+    variant('export_no_package_registery', default=True, description="Build with export no package registery")
+    variant('enable_bindings_gerneration', default=True, description="Build with bindings generation")
 
     depends_on('ncurses')
     depends_on('cmake')
@@ -52,19 +43,48 @@ class Gridtools(CMakePackage):
     def cmake_args(self):
       spec = self.spec
       args = []
-      
-      args.append('-DBoost_NO_BOOST_CMAKE=ON')
+
       args.append('-DGT_ENABLE_BACKEND_MC=OFF')
       args.append('-DGT_ENABLE_BACKEND_NAIVE=OFF')
-      args.append('-DGT_INSTALL_EXAMPLES=OFF')
-      args.append('-DBUILD_SHARED_LIBS=OFF')
-      args.append('-DCMAKE_BUILD_TYPE=Release')
-      args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
-      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
-      args.append('-DCUDA_ARCH={0}'.format(self.spec.variants['cuda_arch'].value))
-      args.append('-DBUILD_TESTING=OFF')
-      args.append('-DGT_USE_MPI=ON')
 
+      args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
+      args.append('-DCUDA_ARCH={0}'.format(self.spec.variants['cuda_arch'].value))
+
+      if spec.variants['no_boost_cmake']:
+        args.append('-DBoost_NO_BOOST_CMAKE=ON')
+      else:
+        args.append('-DBoost_NO_BOOST_CMAKE=OFF')
+
+      if spec.variants['install_examples']:
+        args.append('-DGT_INSTALL_EXAMPLES=ON')
+      else:
+        args.append('-DGT_INSTALL_EXAMPLES=OFF')
+
+      if spec.variants['sharded_libs']: 
+        args.append('-DBUILD_SHARED_LIBS=ON')
+      else:
+        args.append('-DBUILD_SHARED_LIBS=OFF')
+
+      if spec.variants['export_no_package_registery']: 
+        args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
+      else:
+        args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=OFF')
+ 
+      if spec.variants['enable_bindings_gerneration']: 
+        args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
+      else:
+        args.append('-DGT_ENABLE_BINDINGS_GENERATION=OFF')
+
+      if spec.variants['build_testing']: 
+        args.append('-DBUILD_TESTING=ON')
+      else:
+        args.append('-DBUILD_TESTING=OFF')
+
+      if spec.variants['use_mpi']: 
+        args.append('-DGT_USE_MPI=ON')
+      else:
+        args.append('-DGT_USE_MPI=OFF')
+  
       if spec.variants['gpu'].value:
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
         args.append('-DGT_ENABLE_BACKEND_X86=OFF')
