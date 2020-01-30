@@ -70,7 +70,8 @@ compilers:
       f77: gfortran
       fc: gfortran
     spec: gcc@7.3.0
-    target: any- compiler:
+    target: any
+- compiler:
     environment: {}
     extra_rpaths: []
     flags: {}
