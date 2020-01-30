@@ -32,6 +32,7 @@ class Gridtools(CMakePackage):
     maintainers = ['elsagermann']
     
     version('master', branch='master')
+    version('1.1.3', commit='d33fa6fecee0a7bd9e080212c1038f0dbd31fe97')
     version('1.1.2', commit='685880444d4599cc0871e4ec8032e7cccd1755e0')
     version('1.1.0', commit='12ee09103bcd46edb978259b59e90d611f32ed01')
     version('1.0.3', commit='8468d2000ccec95d3a1c481664e6b41a0b038413')
