@@ -60,7 +60,7 @@ class Gridtools(CMakePackage):
       else:
         args.append('-DGT_INSTALL_EXAMPLES=OFF')
 
-      if spec.variants['sharded_libs']: 
+      if spec.variants['shared_libs']: 
         args.append('-DBUILD_SHARED_LIBS=ON')
       else:
         args.append('-DBUILD_SHARED_LIBS=OFF')

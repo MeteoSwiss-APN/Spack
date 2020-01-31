@@ -10,17 +10,16 @@ packages:
     paths: {}
     modules: {}
   cmake:
-    modules:
-      cmake@3.14.5: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5/bin
+    paths:
+      cmake@3.14.5: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
     buildable: true
-    version: [3.14.5]
+    version: []
     target: []
     providers: {}
     compiler: []
-    paths: {}
   boost:
     paths:
-      boost@1.70.0: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/Boost/1.70.0-CrayGNU-19.10-python3
+      boost@1.71.0: /project/g110/install/daint/boost/boost_1_71_0
     buildable: true
     version: []
     target: []
@@ -40,17 +39,15 @@ packages:
     compiler: [gcc]
   grib-api:
     version: [1.20.0.2]
-  mpi:
+  mpich:
     modules:
-      cray-mpich@7.7.10: cray-mpich/7.7.10
-      cray-mpich@7.7.9: cray-mpich/7.7.9
-      cray-mpich@7.7.6: cray-mpich/7.7.6
-  netcdf-fortran:
-    paths:
-      netcdf-fortran@4.4.5: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0
-  netcdf-c:
-    paths:
-      netcdf-c@4.7.0 : /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0 
+      mpich@7.7.10: cray-mpich/7.7.10
+      mpich@7.7.9: cray-mpich/7.7.9
+      mpich@7.7.6: cray-mpich/7.7.6
+  netcdf:
+    modules:
+      cray-netcdf@4.6.3.1: cray-netcdf/4.6.3.1
+    compiler: [cce] 
   perl:
     paths: 
       perl: /usr
@@ -89,5 +86,7 @@ packages:
       slurm@19.05.3-2: slurm/19.05.3-2
   gridtools:
     variants: cuda_arch=sm_60
-  dycore:
+    compiler: [gcc]      
+  cosmo-dycore:
     variants: cuda_arch=sm_60
+    compiler: [gcc]

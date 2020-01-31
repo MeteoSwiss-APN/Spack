@@ -43,7 +43,7 @@ class CosmoDycore(CMakePackage):
     depends_on('gridtools@1.1.3 ~gpu', when='~gpu')
     depends_on('boost@1.67:')
     depends_on('serialbox@2.6.0%gcc', when='+test')
-    depends_on('openmpi')
+    depends_on('mpi')
 
     root_cmakelists_dir='dycore'
     
@@ -51,8 +51,6 @@ class CosmoDycore(CMakePackage):
         spack_env.set('GRIDTOOLS_ROOT', self.spec['gridtools'].prefix)
         if self.spec.variants['test'].value:
           spack_env.set('SERIALBOX_ROOT', self.spec['serialbox'].prefix)
-        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm')
 
     def cmake_args(self):
       spec = self.spec
