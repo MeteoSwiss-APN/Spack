@@ -35,8 +35,6 @@ packages:
     providers: {}
     paths: {}
     compiler: []
-  ncurses:
-    compiler: [gcc]
   grib-api:
     version: [1.20.0.2]
   mpich:

@@ -37,7 +37,7 @@ class Gridtools(CMakePackage):
     depends_on('ncurses')
     depends_on('cmake')
     depends_on('boost@1.67.0:')
-    depends_on('openmpi')
+    depends_on('mpi')
     depends_on('cuda', when='+gpu')
 
     def cmake_args(self):
