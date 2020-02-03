@@ -12,7 +12,7 @@ class CosmoGribApi(AutotoolsPackage):
        FM-92 GRIB edition 1 and edition 2 messages."""
 
     homepage = 'https://software.ecmwf.int/wiki/display/GRIB/Home'
-    git = 'git@github.com:elsagermann/libgrib-api-vendor.git'
+    git = 'git@github.com:C2SM-RCM/libgrib-api-vendor.git'
 
     maintainers = ['egermann']
     
@@ -25,6 +25,8 @@ class CosmoGribApi(AutotoolsPackage):
     depends_on('automake')
     depends_on('libtool')
     depends_on('jasper')
+
+    force_autoreconf = True
 
 
     def configure_args(self):
