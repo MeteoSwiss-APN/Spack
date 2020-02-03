@@ -32,7 +32,7 @@ class Cosmo(MakefilePackage):
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('openmpi', when='+serialize')
     depends_on('libgrib1%gcc')
-    depends_on('cosmo-grib-api')
+    depends_on('cosmo-grib-api%gcc')
     depends_on('jasper@1.900.1:')
     depends_on('perl@5.16:')
     depends_on('claw', when='+claw')
