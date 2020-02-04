@@ -19,12 +19,25 @@ compilers:
     flags: {}
     modules:
     - PrgEnv-pgi/19.9
-    - pgi/19.9-gcc-8.3.0
     operating_system: rhel7
     paths:
-      cc: pgcc
-      cxx: pgc++
-      f77: pgfortran
+      cc: mpicc
+      cxx: mpic++
+      f77: mpif77
       fc: pgfortran
     spec: pgi@19.9
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-pgi/19.9
+    operating_system: rhel7
+    paths:
+      cc: mpicc
+      cxx: mpic++
+      f77: mpif77
+      fc: mpif90
+    spec: pgi@19.9-gcc@8.3.0
     target: any
