@@ -29,3 +29,18 @@ compilers:
       fc: ftn
     spec: gcc@8.3.0
     target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-pgi
+    - pgi/19.7.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: pgi@19.7.0
+    target: any
