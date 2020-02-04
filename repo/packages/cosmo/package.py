@@ -16,7 +16,8 @@ class Cosmo(MakefilePackage):
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
     maintainers = ['elsagermann']
 
-    version('master', branch='master')  
+    version('master', branch='master')
+    version('daint', branch='daint')
     version('5.05a', commit='ef85dacc25cbadec42b0a7b77633c4cfe2aa9fb9')
     version('5.05',  commit='5ade2c96776db00ea945ef18bfeacbeb7835277a')
     version('5.06', commit='26b63054d3e98dc3fa8b7077b28cf24e10bec702')

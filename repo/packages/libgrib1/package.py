@@ -32,7 +32,8 @@ class Libgrib1(MakefilePackage):
     # notify when the package is updated.
     maintainers = ['elsagermann']
     build_directory='libgrib1_cosmo/source'
-   
+
+    version('master', branch='master')
     version('2019-11-22', commit='0ef8d36734609170459a536329dddcad0d930675')
 
 
@@ -58,4 +59,6 @@ class Libgrib1(MakefilePackage):
 
     def install(self, spec, prefix):
         with working_dir('libgrib1_cosmo'):
+            if self.spec.architecture.target == 'haswell':
+                mkdir('lib')
             install_tree('lib', prefix.lib)
