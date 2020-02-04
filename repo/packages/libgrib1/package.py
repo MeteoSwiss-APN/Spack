@@ -40,15 +40,12 @@ class Libgrib1(MakefilePackage):
         spack_env.set('LIBNAME', 'grib1')
 
     def build(self, spec, prefix):
-        config = [
-            'INSTALL_DIR = {0}'.format(prefix),
-            'INCLUDE_DIR = $(INSTALL_DIR)/include',
-            'LIBRARY_DIR = $(INSTALL_DIR)/lib',
-        ]
         with working_dir(self.build_directory):
             MakeFileName = 'Makefile'
             if self.spec.architecture.target == 'skylake_avx512':
                 MakeFileName += '.arolla'
+            if self.spec.architecture.target == 'haswell':
+                MakeFileName += '.daint'
             if self.compiler.name == 'gcc':
                 MakeFileName += '.gnu'
             elif self.compiler.name == 'pgi':
@@ -60,5 +57,6 @@ class Libgrib1(MakefilePackage):
             make(*options)
 
     def install(self, spec, prefix):
-       with working_dir('libgrib1_cosmo'):
+        with working_dir('libgrib1_cosmo'):
+            mkdir('lib')
             install_tree('lib', prefix.lib)

@@ -30,7 +30,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-dycore real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0', when='+serialize')
-    depends_on('openmpi', when='+serialize')
+    depends_on('mpi')
     depends_on('libgrib1%gcc')
     depends_on('cosmo-grib-api%gcc')
     depends_on('jasper@1.900.1:')
@@ -96,6 +96,8 @@ class Cosmo(MakefilePackage):
             OptionsFileName='Options'
             if self.spec.architecture.target == 'skylake_avx512':
                 OptionsFileName += '.tsa'
+            if self.spec.architecture.target == 'haswell':
+                OptionsFileName += '.daint'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gcc'
             elif self.compiler.name == 'pgi':
@@ -124,10 +126,9 @@ class Cosmo(MakefilePackage):
                 else:
                     optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_double -ldycore_base_bindings_double'))
                 optionsfilter.filter('DYCOREGTI =.*',  'DYCOREGTI = -I{0}'.format(spec['cosmo-dycore'].prefix))
-
+                optionsfilter.filter('MPII     =.*',  'MPII     = -I{0}/include'.format(spec['mpi'].prefix))
+                optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpi -lmpi_cxx'.format(spec['mpi'].prefix))
             if '+serialize' in spec:
-                optionsfilter.filter('MPII     =.*',  'MPII     = -I{0}/include'.format(spec['openmpi'].prefix))
-                optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpi -lmpi_cxx'.format(spec['openmpi'].prefix))
                 optionsfilter.filter('SERIALBOXI =.*',  'SERIALBOXI = -I{0}/include/'.format(spec['serialbox'].prefix))
                 optionsfilter.filter('SERIALBOXL =.*',  'SERIALBOXL = {0}/lib/libSerialboxFortran.a {0}/lib/libSerialboxC.a -lstdc++fs -lpthread {0}/lib/libSerialboxCore.a -lstdc++'.format(spec['serialbox'].prefix))
 
