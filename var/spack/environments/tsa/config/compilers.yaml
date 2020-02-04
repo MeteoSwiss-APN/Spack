@@ -2,73 +2,15 @@ compilers:
 - compiler:
     environment: {}
     extra_rpaths: []
-    flags:
-      fflags: -D__CRAY_FORTRAN__
-    modules:
-    - cce/8.7.7
-    operating_system: rhel7
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    spec: cce@8.7.7
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags:
-      fflags: -D__CRAY_FORTRAN__
-    modules:
-    - cce/8.7.10
-    operating_system: rhel7
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    spec: cce@8.7.10
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
     flags: {}
     modules:
-    - gcc/6.1.0
+    - PrgEnv-gnu/19.2
     operating_system: rhel7
     paths:
       cc: gcc
       cxx: g++
       f77: gfortran
       fc: gfortran
-    spec: gcc@6.1.0
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules:
-    - gcc/7.2.0
-    operating_system: rhel7
-    paths:
-      cc: gcc
-      cxx: g++
-      f77: gfortran
-      fc: gfortran
-    spec: gcc@7.2.0
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules:
-    - PrgEnv-pgi/19.9
-    operating_system: rhel7
-    paths:
-      cc: gcc
-      cxx: g++
-      f77: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
-      fc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
     spec: gcc@8.3.0
     target: any
 - compiler:
@@ -77,25 +19,12 @@ compilers:
     flags: {}
     modules:
     - PrgEnv-pgi/19.9
+    - pgi/19.9-gcc-8.3.0
     operating_system: rhel7
     paths:
-      cc: gcc
-      cxx: g++
-      f77: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgfortran
-      fc: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgfortran
-    spec: pgi@19.9
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules:
-    - PrgEnv-pgi/19.9
-    operating_system: rhel7
-    paths:
-      cc: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgcc
-      cxx: g++
+      cc: pgcc
+      cxx: pgc++
       f77: pgfortran
       fc: pgfortran
-    spec: pgi@19.9-gcc
+    spec: pgi@19.9
     target: any
