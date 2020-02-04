@@ -42,10 +42,13 @@ packages:
       mpich@7.7.10: cray-mpich/7.7.10
       mpich@7.7.9: cray-mpich/7.7.9
       mpich@7.7.6: cray-mpich/7.7.6
-  netcdf:
-    modules:
-      cray-netcdf@4.6.3.1: cray-netcdf/4.6.3.1
+  netcdf-c:
+    paths:
+      netcdf-c@4.6.3.1: /opt/cray/pe/netcdf/4.6.3.1/cray/9.0/
     compiler: [cce] 
+  netcdf-fortran:
+    paths:
+      netcdf-fortran@4.6.3.1: /opt/cray/pe/netcdf/4.6.3.1/cray/9.0/
   perl:
     paths: 
       perl: /usr
