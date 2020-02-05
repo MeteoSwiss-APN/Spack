@@ -20,6 +20,7 @@ packages:
   boost:
     paths:
       boost@1.71.0: /project/g110/install/daint/boost/boost_1_71_0
+      boost@1.67.0: /project/g110/install/daint/boost/boost_1_67_0
     buildable: true
     version: []
     target: []
@@ -85,6 +86,8 @@ packages:
   slurm:
     modules:
       slurm@19.05.3-2: slurm/19.05.3-2
+  cosmo:
+    variants: [daint]
   gridtools:
     variants: cuda_arch=sm_60
     compiler: [gcc]      
