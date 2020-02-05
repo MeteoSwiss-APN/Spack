@@ -8,5 +8,5 @@ config:
   module_roots:
     tcl:  *modules_install_path
   build_stage:
-    - $spack/var/spack/stage
+    - /scratch/$user/spack-stages/tsa
   install_path_scheme: '{name}/{version}/{compiler.name}'
