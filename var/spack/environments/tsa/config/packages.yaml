@@ -83,5 +83,6 @@ packages:
     compiler: [gcc]
   gridtools:
     variants: cuda_arch=sm_70
-
+  cosmo:
+    version: [master]
 
