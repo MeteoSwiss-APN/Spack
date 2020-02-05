@@ -87,7 +87,8 @@ packages:
     modules:
       slurm@19.05.3-2: slurm/19.05.3-2
   cosmo:
-    variants: [daint]
+    version: [daint]
+    compiler: [pgi]
   gridtools:
     variants: cuda_arch=sm_60
     compiler: [gcc]      
