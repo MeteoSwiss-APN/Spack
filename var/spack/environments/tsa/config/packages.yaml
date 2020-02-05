@@ -23,8 +23,8 @@ packages:
     compiler: []
   cuda:
     modules:
-      cuda@10.1.243%pgi:  PrgEnv-pgi/19.9
-      cuda@10.1.243%gcc: cuda/10.1.243
+      cuda@10.1.243%pgi: PrgEnv-pgi/19.9
+      cuda@10.1.243%gcc: PrgEnv-gnu/19.2
     buildable: true
     version: []
     target: []
