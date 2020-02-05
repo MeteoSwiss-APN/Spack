@@ -53,12 +53,27 @@ class Libgrib1(MakefilePackage):
                 MakeFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 MakeFileName += '.cray'
+            MakeFileFilter = FileFilter(MakeFileName)
+            stage_path = self.stage.source_path + '/libgrib1_cosmo'
+            MakeFileFilter.filter('INCDIR   =.*',  'INCDIR   = {0}/include'.format(stage_path))
+            MakeFileFilter.filter('LIBDIR   =.*',  'LIBDIR   = {0}/lib'.format(stage_path))
             options = ['-f', MakeFileName]
-            env['PWD'] = '.' 
             make(*options)
 
     def install(self, spec, prefix):
-        with working_dir('libgrib1_cosmo'):
+        with working_dir(self.build_directory):
+            MakeFileName = 'Makefile'
+            if self.spec.architecture.target == 'skylake_avx512':
+                MakeFileName += '.arolla'
             if self.spec.architecture.target == 'haswell':
-                mkdir('lib')
+                MakeFileName += '.daint'
+            if self.compiler.name == 'gcc':
+                MakeFileName += '.gnu'
+            elif self.compiler.name == 'pgi':
+                MakeFileName += '.pgi'
+            elif self.compiler.name == 'cce':
+                MakeFileName += '.cray'
+            options = ['-f', MakeFileName, 'install']
+            make(*options)
+        with working_dir('libgrib1_cosmo'):
             install_tree('lib', prefix.lib)
