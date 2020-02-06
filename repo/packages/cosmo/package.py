@@ -29,7 +29,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-dycore%gcc +test', when='+dycoretest')
     depends_on('cosmo-dycore%gcc', when='+cppdycore')
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
-    depends_on('cosmo-dycore&gcc real_type=double', when='real_type=double +cppdycore')
+    depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi')
     depends_on('libgrib1')
