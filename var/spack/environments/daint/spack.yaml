@@ -9,3 +9,5 @@ spack:
   include:
   - ./config/compilers.yaml
   - ./config/packages.yaml
+  - ./config/modules.yaml
+  - ./config/config.yaml

@@ -1,12 +1,9 @@
 config:
-  parameters:
-    install_path: &install_path /scratch/snx3000/$user/install/daint #to be changed to project/c14/install/tsa
-    modules_install_path: &modules_install_path /scratch/snx3000/$user/modules/ #to be changed to ?
-  install_tree: *install_path
+  install_tree: /scratch/snx3000/$user/install/daint #to be changed to project/c14/install/daint
   template_dirs:
     - $spack/templates
   module_roots:
-    tcl:  *modules_install_path
+    tcl:  /scratch/snx3000/$user/modules
   build_stage:
-    - $spack/var/spack/stage
+    - /scratch/snx3000/$user/spack-stages/daint
   install_path_scheme: '{name}/{version}/{compiler.name}'
