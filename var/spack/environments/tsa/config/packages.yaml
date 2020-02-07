@@ -66,15 +66,9 @@ packages:
   jasper:
     paths:
       jasper@2.0.14: /usr
-  ant:
-    paths:
-      ant@1.10.0: /usr
   libxml2:
     paths:
       libxml2@2.9.9: /usr
-  openjdk:
-    paths:
-      openjdk@11.0.2: /usr
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04
