@@ -2,7 +2,7 @@
 
 Official Spack documentation [below](#-spack).
 
-## Building software on tsa
+## Building software on tsa/daint
 
 First git clone the Meteoschweiz spack fork and source the spack file under spack/share/spack in order to use it
 
@@ -10,7 +10,7 @@ First git clone the Meteoschweiz spack fork and source the spack file under spac
     $ cd spack/share/spack
     $ . setup-env.sh
  
-Then activate the environment machine (tsa, daint soon available)
+Then activate the environment machine (tsa, daint)
 
     $ spack env activate <machine>
     
@@ -25,7 +25,7 @@ Ex:
 
 This will clone the package, build it and then install the chosen package and all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept. Module files are also created during this process and install under _/scratch/$USER/modules/_
 
-## Dev-building software on tsa
+## Dev-building software on tsa/daint
 
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install 
     
