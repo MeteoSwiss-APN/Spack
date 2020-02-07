@@ -45,4 +45,4 @@ packages:
       unwind: [libunwind]
     permissions:
       read: world
-      write: user
+      write: world
