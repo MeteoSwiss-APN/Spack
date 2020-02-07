@@ -69,7 +69,7 @@ class CosmoDycore(CMakePackage):
       args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
     
       if spec.variants['real_type'].value == 'float':
-        args.append('-DPRECISION=single')
+        args.append('-DPRECISION=float')
       else:
         args.append('-DPRECISION=double')
       
