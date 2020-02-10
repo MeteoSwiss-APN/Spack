@@ -18,6 +18,7 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master')
     version('daint', branch='daint')
+    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('5.05a', commit='ef85dacc25cbadec42b0a7b77633c4cfe2aa9fb9')
     version('5.05',  commit='5ade2c96776db00ea945ef18bfeacbeb7835277a')
     version('5.06', commit='26b63054d3e98dc3fa8b7077b28cf24e10bec702')
@@ -31,7 +32,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-dycore%gcc', when='+cppdycore')
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
-    depends_on('serialbox@2.6.0', when='+serialize')
+    depends_on('serialbox@2.6.0%gcc', when='+serialize')
     depends_on('mpi')
     depends_on('libgrib1')
     depends_on('cosmo-grib-api')
@@ -58,6 +59,8 @@ class Cosmo(MakefilePackage):
     @property
     def build_targets(self):
         build = []
+        if self.version == Version('mch'):
+            build.append('POLLEN=1')
         if self.spec.variants['real_type'].value == 'float':
             build.append('SINGLEPRECISION=1')
         if '+gpu' in self.spec:
