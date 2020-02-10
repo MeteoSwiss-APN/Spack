@@ -26,10 +26,9 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('cuda')
-    depends_on('cosmo-dycore%gcc real_type=double +gpu', when='real_type=double +gpu')
-    depends_on('cosmo-dycore%gcc real_type=float +gpu', when='real_type=float +gpu')
     depends_on('cosmo-dycore%gcc +test', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc', when='+cppdycore')
+    depends_on('cosmo-dycore%gcc cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
+    depends_on('cosmo-dycore%gcc cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0%gcc', when='+serialize')
@@ -42,10 +41,10 @@ class Cosmo(MakefilePackage):
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=False, description='Compile Dycore unittest')
-    variant('gpu', default=True, description='Build the GPU version of COSMO')
     variant('serialize', default=False, description='Build with serialization enabled')
     variant('parallel', default=True, description='Build parallel COSMO')
     variant('debug', default=False, description='Build debug mode')
+    variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
 
@@ -63,29 +62,30 @@ class Cosmo(MakefilePackage):
             build.append('POLLEN=1')
         if self.spec.variants['real_type'].value == 'float':
             build.append('SINGLEPRECISION=1')
-        if '+gpu' in self.spec:
+        if '+cppdyocre' in self.spec:
             build.append('CPP_GT_DYCORE=1')
         if '+claw' in self.spec:
             build.append('CLAW=1')
         if '+serialize' in self.spec:
             build.append('SERIALIZE=1')
             build.append('SER_READ_PERT=1')
-        target = ''
+        MakeFileTarget = ''
         if '+parallel' in self.spec:
-            target += 'par'
+            MakeFileTarget += 'par'
         else:
-            target += 'seq'
+            MakeFileTarget += 'seq'
         if '+debug' in self.spec:
-            target += 'debug'
+            MakeFileTarget += 'debug'
         else:
-            target += 'opt'
-        build.append(target)
+            MakeFileTarget += 'opt'
+        build.append(MakeFileTarget)
 
         return build
 
     def edit(self, spec, prefix):
-        if '+gpu' in self.spec:
+        if self.spec.variants['cosmo_target'].value == 'gpu':
           env['BOOST_ROOT'] = spec['boost'].prefix
+        if '+cppdycore' in self.spec:
           env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
           env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
         if '+serialize' in self.spec:
@@ -109,7 +109,7 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
-            if '+gpu' in self.spec:
+            if self.spec.variants['cosmo_target'].value == 'gpu' in self.spec:
                 OptionsFileName += '.gpu'
                 optionsfilter = FileFilter('Options.lib.gpu')
             else:
@@ -147,5 +147,5 @@ class Cosmo(MakefilePackage):
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
-             mkdir(prefix.bin)
-             install('cosmo', prefix.bin)
+            mkdir(prefix.bin)
+            install('cosmo', prefix.bin)

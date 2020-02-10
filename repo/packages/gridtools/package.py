@@ -28,7 +28,7 @@ class Gridtools(CMakePackage):
     variant('shared_libs', default=False, description="Build shared librairies")
     variant('install_examples', default=False, description="Build with examples")
     variant('build_testing', default=False, description="Build with tests")
-    variant('gpu', default=True, description="Build with target gpu")
+    variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('use_mpi', default=True, description="Build with using mpi")
     variant('no_boost_cmake', default=True, description="Build with no boost for CMake")
     variant('export_no_package_registery', default=True, description="Build with export no package registery")
@@ -85,7 +85,7 @@ class Gridtools(CMakePackage):
       else:
         args.append('-DGT_USE_MPI=OFF')
   
-      if spec.variants['gpu'].value:
+      if self.spec.variants['cosmo_target'].value == 'gpu':
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
         args.append('-DGT_ENABLE_BACKEND_X86=OFF')
       else:

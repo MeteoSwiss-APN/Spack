@@ -35,12 +35,12 @@ class CosmoDycore(CMakePackage):
     version('master', branch='master')
 
     variant('test', default=False, description="Compile Dycore unittests")
-    variant('gpu', default=True, description="GPU dycore")
+    variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
     
-    depends_on('gridtools@1.1.3 +gpu', when='+gpu')
-    depends_on('gridtools@1.1.3 ~gpu', when='~gpu')
+    depends_on('gridtools@1.1.3 cosmo_target=gpu', when='cosmo_target=gpu')
+    depends_on('gridtools@1.1.3 cosmo_target=cpu', when='cosmo_target=cpu')
     depends_on('boost@1.67:')
     depends_on('serialbox@2.6.0%gcc', when='+test')
     depends_on('mpi')
@@ -81,7 +81,7 @@ class CosmoDycore(CMakePackage):
           args.append('-DSerialbox_DIR={0}'.format(SerialBoxRoot))
 
       # target=gpu
-      if spec.variants['gpu'].value:
+      if self.spec.variants['cosmo_target'].value == 'gpu':
         args.append('-DENABLE_CUDA=ON')
         args.append('-DCUDA_ARCH={0}'.format(self.spec.variants['cuda_arch'].value))
         args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
