@@ -53,7 +53,11 @@ class Cosmo(MakefilePackage):
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
-        spack_env.set('LIBNAME', 'grib1')
+        grib_definition_path = self.spec['cosmo-grib-api'].prefix + '/share/grib_api/definitions:' + self.spec['cosmo-grib-api'].prefix + '/cosmo_definitions'
+        spack_env.set('GRIB_DEFINITION_PATH', grib_definition_path)
+        grib_samples_path = self.spec['cosmo-grib-api'].prefix + '/cosmo_samples'
+        spack_env.set('GRIB_SAMPLES_PATH', grib_samples_path)
+        spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
 
     @property
     def build_targets(self):
@@ -128,7 +132,7 @@ class Cosmo(MakefilePackage):
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
 
-            if '+gpu' in spec:
+            if '+cppdycore' in spec:
                 optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools'].prefix))
                 optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLSI = -I{0}/include/gridtools'.format(spec['gridtools'].prefix))
                 if spec.variants['real_type'].value == 'float':
@@ -136,11 +140,13 @@ class Cosmo(MakefilePackage):
                 else:
                     optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_double -ldycore_base_bindings_double'))
                 optionsfilter.filter('DYCOREGTI =.*',  'DYCOREGTI = -I{0}'.format(spec['cosmo-dycore'].prefix))
-                optionsfilter.filter('MPII     =.*',  'MPII     = -I{0}/include'.format(spec['mpi'].prefix))
-                if self.spec['mpi'].name == 'openmpi':
-                    optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpi -lmpi_cxx'.format(spec['mpi'].prefix))
-                if self.spec['mpi'].name == 'mpich':
-                    optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpich -lmpichcxx'.format(spec['mpi'].prefix))
+
+            optionsfilter.filter('MPII     =.*',  'MPII     = -I{0}/include'.format(spec['mpi'].prefix))
+            if self.spec['mpi'].name == 'openmpi':
+                optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpi -lmpi_cxx'.format(spec['mpi'].prefix))
+            if self.spec['mpi'].name == 'mpich':
+                optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpich -lmpichcxx'.format(spec['mpi'].prefix))
+
             if '+serialize' in spec:
                 optionsfilter.filter('SERIALBOXI =.*',  'SERIALBOXI = -I{0}/include/'.format(spec['serialbox'].prefix))
                 optionsfilter.filter('SERIALBOXL =.*',  'SERIALBOXL = {0}/lib/libSerialboxFortran.a {0}/lib/libSerialboxC.a -lstdc++fs -lpthread {0}/lib/libSerialboxCore.a -lstdc++'.format(spec['serialbox'].prefix))

@@ -25,9 +25,9 @@ class CosmoGribApi(AutotoolsPackage):
     depends_on('automake')
     depends_on('libtool')
     depends_on('jasper')
-
+    
+    resource(name='libgrib-api', git='git@github.com:C2SM-RCM/libgrib-api-cosmo-resources.git', destination='.')
     force_autoreconf = True
-
 
     def configure_args(self):
         args = [
@@ -41,4 +41,12 @@ class CosmoGribApi(AutotoolsPackage):
             '--enable-omp-packing',
         ]
 
-        return args                                    
+        return args                                   
+
+    def install(self, spec, prefix):
+        make('install')
+        with working_dir('libgrib-api-cosmo-resources'):
+          mkdir(prefix.cosmo_definitions)
+          install_tree('definitions', prefix.cosmo_definitions)
+          mkdir(prefix.cosmo_samples)
+          install_tree('samples', prefix.cosmo_samples)
