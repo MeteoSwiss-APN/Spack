@@ -20,7 +20,11 @@ modules:
       environment:
         set:
           DYCOREGT_DIR: '${PREFIX}'
-
+    cosmo-grib-api:
+      environment:
+        set:
+          GRIB_DEFINITION_PATH: '${PREFIX}/share/grib_api/definitions/:${PREFIX}/cosmo_definitions/'
+          GRIB_SAMPLES_PATH: '${PREFIX}/cosmo_samples/'
     serialbox:
       environment:
         set:

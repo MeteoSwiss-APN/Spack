@@ -108,7 +108,7 @@ class Cosmo(MakefilePackage):
             if self.spec.architecture.target == 'haswell':
                 OptionsFileName += '.daint'
             if self.compiler.name == 'gcc':
-                OptionsFileName += '.gcc'
+                OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':

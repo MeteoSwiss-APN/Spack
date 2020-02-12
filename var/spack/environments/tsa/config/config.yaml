@@ -6,4 +6,4 @@ config:
     tcl:  /scratch/$user/modules/ #to be changed to ?
   build_stage:
     - /scratch/$user/spack-stages/tsa
-  install_path_scheme: '{name}/{version}/{compiler.name}'
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
