@@ -6,7 +6,7 @@ modules:
       autoload: 'direct'
     naming_scheme: '${PACKAGE}/${VERSION}'
     hash_length: 0
-    blacklist: ['cuda', 'cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses', 'openmpi']
+    blacklist: ['cuda', 'cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses']
     boost:
       environment:
         set:
@@ -50,3 +50,7 @@ modules:
         set:
           UCX_MEMTYPE_CACHE: 'n'
           UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm'
+    mpi:
+      environment:
+        set:
+          MPI_ROOT: '${PREFIX}'
