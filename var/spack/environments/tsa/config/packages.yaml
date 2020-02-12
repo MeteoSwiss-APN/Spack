@@ -44,7 +44,7 @@ packages:
       netcdf-c@4.7.0%gcc : /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b/include
   perl:
     paths: 
-      perl@5.16: /usr
+      perl@5.16.3: /usr
   m4:
     paths: 
       m4@1.4.16: /usr
@@ -63,12 +63,12 @@ packages:
   ncurses:
     paths:
       ncurses@6.1: /usr
-  jasper:
-    paths:
-      jasper@2.0.14: /usr
   libxml2:
     paths:
       libxml2@2.9.9: /usr
+  libjpeg:
+    paths:
+      libjpeg: /usr
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04

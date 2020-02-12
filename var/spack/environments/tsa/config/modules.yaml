@@ -25,6 +25,7 @@ modules:
         set:
           GRIB_DEFINITION_PATH: '${PREFIX}/share/grib_api/definitions/:${PREFIX}/cosmo_definitions/'
           GRIB_SAMPLES_PATH: '${PREFIX}/cosmo_samples/'
+          GRIBAPI_COSMO_RESOURCES_VERSION: 'v1.20.0.2'
     serialbox:
       environment:
         set:

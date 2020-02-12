@@ -35,8 +35,7 @@ class Cosmo(MakefilePackage):
     depends_on('mpi')
     depends_on('libgrib1')
     depends_on('cosmo-grib-api')
-    depends_on('jasper@1.900.1:')
-    depends_on('perl@5.16:')
+    depends_on('perl@5.16.3')
     depends_on('claw', when='+claw')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
@@ -66,7 +65,7 @@ class Cosmo(MakefilePackage):
             build.append('POLLEN=1')
         if self.spec.variants['real_type'].value == 'float':
             build.append('SINGLEPRECISION=1')
-        if '+cppdyocre' in self.spec:
+        if '+cppdycore' in self.spec:
             build.append('CPP_GT_DYCORE=1')
         if '+claw' in self.spec:
             build.append('CLAW=1')
