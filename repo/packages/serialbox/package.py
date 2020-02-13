@@ -36,3 +36,10 @@ class Serialbox(CMakePackage):
     version('2.4.3', commit='f15bd29db2e75d4e775bd133400bab33df55856b')
 
     depends_on('boost@1.67.0')
+
+    def cmake_args(self):
+      args = []
+
+      args.append('-DSERIALBOX_ENABLE_FORTRAN=ON')
+
+      return args

@@ -33,10 +33,11 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0%gcc', when='+serialize')
     depends_on('mpi')
-    depends_on('libgrib1')
+    depends_on('libgrib1%pgi')
     depends_on('cosmo-grib-api')
     depends_on('perl@5.16.3')
     depends_on('claw', when='+claw')
+    depends_on('boost', when='cosmo_target=gpu ~cppdycore')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=False, description='Compile Dycore unittest')
@@ -71,7 +72,6 @@ class Cosmo(MakefilePackage):
             build.append('CLAW=1')
         if '+serialize' in self.spec:
             build.append('SERIALIZE=1')
-            build.append('SER_READ_PERT=1')
         MakeFileTarget = ''
         if '+parallel' in self.spec:
             MakeFileTarget += 'par'
