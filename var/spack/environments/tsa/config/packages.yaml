@@ -37,23 +37,24 @@ packages:
   netcdf-fortran:
     modules:
       netcdf-fortran@4.4.5%pgi: netcdf-fortran/4.4.5-pgi-19.9-gcc-8.3.0
-      netcdf-fortran@4.4.5%gcc: netcdf-fortran/4.4.5-fosscuda-2019b
+    paths:
+      netcdf-fortran@4.4.5%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b
   netcdf-c:
     paths:
       netcdf-c@4.7.0%pgi : /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0
-      netcdf-c@4.7.0%gcc : /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b/include
+      netcdf-c@4.7.0%gcc : /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
   perl:
     paths: 
       perl@5.16.3: /usr
   m4:
     paths: 
       m4@1.4.16: /usr
+  libtool:
+    paths:
+      libtool: /usr
   automake:
     paths:
       automake@1.13.4: /usr
-  libtool:
-    paths:
-      libtool@2.4.2: /usr
   autoconf:
     paths:
       autoconf@2.69: /usr

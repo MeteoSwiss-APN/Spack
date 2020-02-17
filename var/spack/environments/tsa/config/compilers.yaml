@@ -1,4 +1,4 @@
-compilers:
+compilers::
 - compiler:
     environment: {}
     extra_rpaths: []
@@ -7,37 +7,25 @@ compilers:
     - PrgEnv-pgi/19.9
     operating_system: rhel7
     paths:
-      cc: gcc
-      cxx: g++
-      f77: gfortran
-      fc: gfortran
-    spec: gcc@8.3.0
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules:
-    - PrgEnv-pgi/19.9
-    operating_system: rhel7
-    paths:
-      cc: mpicc
-      cxx: mpic++
-      f77: mpif77
-      fc: pgfortran
+      cc: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgcc
+      cxx: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgc++
+      f77: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgfortran
+      fc: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgfortran
     spec: pgi@19.9
-    target: any
+    target: x86_64
 - compiler:
-    environment: {}
+    paths:
+      cc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gcc
+      cxx: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/g++
+      f77: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
+      fc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
+    operating_system: rhel7
+    target: x86_64
+    modules:
+    - PrgEnv-gnu/19.2
+    environment:
+      set:
+        GCC_PATH: '/apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0'
     extra_rpaths: []
     flags: {}
-    modules:
-    - PrgEnv-pgi/19.9
-    operating_system: rhel7
-    paths:
-      cc: mpicc
-      cxx: mpic++
-      f77: mpif77
-      fc: mpif90
-    spec: pgi@19.9-gcc@8.3.0
-    target: any
+    spec: gcc@8.3.0

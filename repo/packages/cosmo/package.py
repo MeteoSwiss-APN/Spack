@@ -33,7 +33,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0%gcc', when='+serialize')
     depends_on('mpi')
-    depends_on('libgrib1%pgi')
+    depends_on('libgrib1')
     depends_on('cosmo-grib-api')
     depends_on('perl@5.16.3')
     depends_on('claw', when='+claw')
@@ -122,7 +122,10 @@ class Cosmo(MakefilePackage):
             
             optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['cosmo-grib-api'].prefix))
             optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{1}/libjasper/lib -ljasper'.format(spec['cosmo-grib-api'].prefix, spec['jasper'].prefix))
-            optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1_{1}'.format(spec['libgrib1'].prefix, self.compiler.name))
+            if self.compiler.name == 'gcc':
+              optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1_gnu'.format(spec['libgrib1'].prefix))
+            else:
+              optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1_{1}'.format(spec['libgrib1'].prefix, self.compiler.name))
             # on tsa netcdf path is not included by the wrapper
             if self.spec.architecture.target == 'skylake_avx512':
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
@@ -153,4 +156,7 @@ class Cosmo(MakefilePackage):
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
-            install('cosmo', prefix.bin)
+            if '+serialize' in spec:
+              install('cosmo_serialize', prefix.bin)
+            else:
+              install('cosmo', prefix.bin)
