@@ -20,10 +20,10 @@ You are then able to build any packages available (_spack list_ to print the who
  
 Ex:
     
-    $ spack install cosmo@master%pgi +gpu
+    $ spack install cosmo@master%pgi cosmo_target=gpu
     
 
-This will clone the package, build it and then install the chosen package and all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept. Module files are also created during this process and install under _/scratch/$USER/modules/_
+This will clone the package, build it and then install the chosen package and all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept (add _--keep-stage_ after the install command in order to keep it). Module files are also created during this process and installed under _/scratch/$USER/modules/_
 
 ## Dev-building software on tsa/daint
 
