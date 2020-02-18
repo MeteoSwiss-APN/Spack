@@ -12,7 +12,7 @@ compilers::
       f77: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgfortran
       fc: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgfortran
     spec: pgi@19.9
-    target: x86_64
+    target: any
 - compiler:
     paths:
       cc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gcc
@@ -20,12 +20,10 @@ compilers::
       f77: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
       fc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
     operating_system: rhel7
-    target: x86_64
+    target: any
     modules:
-    - PrgEnv-gnu/19.2
-    environment:
-      set:
-        GCC_PATH: '/apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0'
+    - PrgEnv-pgi/19.9
+    environment: {}
     extra_rpaths: []
     flags: {}
     spec: gcc@8.3.0

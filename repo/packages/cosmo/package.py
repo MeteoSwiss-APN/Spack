@@ -112,7 +112,7 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
-            if self.spec.variants['cosmo_target'].value == 'gpu' in self.spec:
+            if self.spec.variants['cosmo_target'].value == 'gpu':
                 OptionsFileName += '.gpu'
                 optionsfilter = FileFilter('Options.lib.gpu')
             else:
