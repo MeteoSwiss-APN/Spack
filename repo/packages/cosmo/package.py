@@ -35,7 +35,7 @@ class Cosmo(MakefilePackage):
     depends_on('mpi')
     depends_on('libgrib1')
     depends_on('cosmo-grib-api')
-    depends_on('perl@5.16.3')
+    depends_on('perl@5.16.3:')
     depends_on('claw', when='+claw')
     depends_on('boost', when='cosmo_target=gpu ~cppdycore')
 
