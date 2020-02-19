@@ -22,7 +22,7 @@ compilers::
     operating_system: rhel7
     target: any
     modules:
-    - PrgEnv-pgi/19.9
+    - PrgEnv-gnu/19.2
     environment: {}
     extra_rpaths: []
     flags: {}
