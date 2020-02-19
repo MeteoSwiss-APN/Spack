@@ -38,7 +38,7 @@ class Gridtools(CMakePackage):
     depends_on('cmake')
     depends_on('boost@1.67.0:')
     depends_on('mpi')
-    depends_on('cuda', when='+gpu')
+    depends_on('cuda', when='cosmo_target=gpu')
 
     def cmake_args(self):
       spec = self.spec
