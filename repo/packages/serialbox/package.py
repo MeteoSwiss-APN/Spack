@@ -37,9 +37,19 @@ class Serialbox(CMakePackage):
 
     depends_on('boost@1.67.0')
 
+    variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
+    variant('fortran', default=True, description='Build the C interface of Serialbox (libSerialboxFortran)')
+    variant('shared', default=True, description='Build shared libraries of Serialbox')
+
     def cmake_args(self):
-      args = []
+        args = []
 
-      args.append('-DSERIALBOX_ENABLE_FORTRAN=ON')
+        args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
 
-      return args
+        if '+fortran' in self.spec:
+            args.append('-DSERIALBOX_ENABLE_FORTRAN=ON')
+        if '+shared' in self.spec:
+            args.append('-DSERIALBOX_BUILD_SHARED=ON')
+        else:
+            args.append('-DSERIALBOX_BUILD_SHARED=OFF')
+        return args
