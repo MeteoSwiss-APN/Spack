@@ -1,4 +1,4 @@
-# Copyright 2013-2019 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2020 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -18,6 +18,7 @@ class Bazel(Package):
 
     maintainers = ['adamjstewart']
 
+    version('1.2.1',  sha256='255da49d0f012bc4f2c1d6d3ccdbe578e22fe97b8d124e1629a486fe2a09d3e1')
     version('1.2.0',  sha256='9cb46b0a18b9166730307a0e82bf4c02281a1cc6da0fb11239e6fe4147bdee6e')
     version('1.1.0',  sha256='4b66a8c93af7832ed32e7236cf454a05f3aa06d25a8576fc3f83114f142f95ab')
     version('1.0.1',  sha256='f4d2dfad011ff03a5fae41b9b02cd96cd7297c1205d496603d66516934fbcfee')
@@ -86,7 +87,10 @@ class Bazel(Package):
     version('0.3.0',  sha256='357fd8bdf86034b93902616f0844bd52e9304cccca22971ab7007588bf9d5fb3')
 
     # https://docs.bazel.build/versions/master/install-compile-source.html#bootstrap-bazel
-    depends_on('java@8', type=('build', 'run'))
+    # Until https://github.com/spack/spack/issues/14058 is fixed, use jdk to build bazel
+    # Strict dependency on java@8 as per
+    # https://docs.bazel.build/versions/master/install-compile-source.html#bootstrap-unix-prereq
+    depends_on('jdk@1.8.0:1.8.999', type=('build', 'run'))
     depends_on('python', type=('build', 'run'))
 
     # Pass Spack environment variables to the build
@@ -122,7 +126,9 @@ class Bazel(Package):
         return url.format(version)
 
     def setup_build_environment(self, env):
-        env.set('EXTRA_BAZEL_ARGS', '--host_javabase=@local_jdk//:jdk')
+        env.set('EXTRA_BAZEL_ARGS',
+                # Spack's logs don't handle colored output well
+                '--color=no --host_javabase=@local_jdk//:jdk')
 
     def bootstrap(self, spec, prefix):
         bash = which('bash')
@@ -137,7 +143,8 @@ class Bazel(Package):
     def test(self):
         # https://github.com/Homebrew/homebrew-core/blob/master/Formula/bazel.rb
 
-        with working_dir('spack-test', create=True):
+        # Bazel does not work properly on NFS, switch to /tmp
+        with working_dir('/tmp/spack/bazel/spack-test', create=True):
             touch('WORKSPACE')
 
             with open('ProjectRunner.java', 'w') as f:
@@ -156,8 +163,10 @@ java_binary(
     main_class = "ProjectRunner",
 )""")
 
+            # Spack's logs don't handle colored output well
             bazel = Executable(self.prefix.bin.bazel)
-            bazel('build', '//:bazel-test')
+            bazel('--output_user_root=/tmp/spack/bazel/spack-test',
+                  'build', '--color=no', '//:bazel-test')
 
             exe = Executable('bazel-bin/bazel-test')
             assert exe(output=str) == 'Hi!\n'
