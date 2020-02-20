@@ -34,7 +34,7 @@ class CosmoDycore(CMakePackage):
     
     version('master', branch='master')
 
-    variant('test', default=False, description="Compile Dycore unittests")
+    variant('build_tests', default=False, description="Compile Dycore unittests")
     variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
@@ -42,14 +42,14 @@ class CosmoDycore(CMakePackage):
     depends_on('gridtools@1.1.3 cosmo_target=gpu', when='cosmo_target=gpu')
     depends_on('gridtools@1.1.3 cosmo_target=cpu', when='cosmo_target=cpu')
     depends_on('boost@1.67:')
-    depends_on('serialbox@2.6.0%gcc', when='+test')
+    depends_on('serialbox@2.6.0%gcc', when='+build_tests')
     depends_on('mpi')
 
     root_cmakelists_dir='dycore'
     
     def setup_environment(self, spack_env, run_env):
         spack_env.set('GRIDTOOLS_ROOT', self.spec['gridtools'].prefix)
-        if self.spec.variants['test'].value:
+        if self.spec.variants['build_tests'].value:
           spack_env.set('SERIALBOX_ROOT', self.spec['serialbox'].prefix)
 
     def cmake_args(self):
@@ -73,7 +73,7 @@ class CosmoDycore(CMakePackage):
       else:
         args.append('-DPRECISION=double')
       
-      if not spec.variants['test'].value:
+      if not spec.variants['build_tests'].value:
           args.append('-DBUILD_TESTING=OFF')
       else:
           args.append('-DBUILD_TESTING=ON')
