@@ -13,12 +13,12 @@ class NetcdfFortran(AutotoolsPackage):
     distribution."""
 
     homepage = "https://www.unidata.ucar.edu/software/netcdf"
-    url      = "https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.5.2.tar.gz"
+    url      = "https://github.com/Unidata/netcdf-fortran/archive/v4.5.2.tar.gz"
 
-    version('4.5.2', sha256='b959937d7d9045184e9d2040a915d94a7f4d0185f4a9dceb8f08c94b0c3304aa')
-    version('4.4.5', sha256='2467536ce29daea348c736476aa8e684c075d2f6cab12f3361885cb6905717b8')
-    version('4.4.4', sha256='b2d395175f8d283e68c8be516e231a96b191ade67ad0caafaf7fa01b1e6b5d75')
-    version('4.4.3', sha256='330373aa163d5931e475b5e83da5c1ad041e855185f24e6a8b85d73b48d6cda9')
+    version('4.5.2', sha256='0b05c629c70d6d224a3be28699c066bfdfeae477aea211fbf034d973a8309b49')
+    version('4.4.5', sha256='01643461ac42d1986e38a052eb021135bae5b6cd592373fb44cf832236791c03')
+    version('4.4.4', sha256='44b1986c427989604df9925dcdbf6c1a977e4ecbde6dd459114bca20bf5e9e67')
+    version('4.4.3', sha256='4170fc018c9ee8222e317215c6a273542623185f5f6ee00d37bbb4e024e4e998')
 
     variant('mpi', default=True,
             description='Enable parallel I/O for netcdf-4')
