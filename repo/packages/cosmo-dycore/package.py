@@ -34,20 +34,22 @@ class CosmoDycore(CMakePackage):
     
     version('master', branch='master')
 
-    variant('build_tests', default=False, description="Compile Dycore unittests")
+    variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")
     variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
     
     depends_on('gridtools@1.1.3 cosmo_target=gpu', when='cosmo_target=gpu')
     depends_on('gridtools@1.1.3 cosmo_target=cpu', when='cosmo_target=cpu')
-    depends_on('boost@1.67:')
+    depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0%gcc', when='+build_tests')
     depends_on('mpi')
 
     root_cmakelists_dir='dycore'
     
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
+        spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
         spack_env.set('GRIDTOOLS_ROOT', self.spec['gridtools'].prefix)
         if self.spec.variants['build_tests'].value:
           spack_env.set('SERIALBOX_ROOT', self.spec['serialbox'].prefix)
@@ -102,5 +104,14 @@ class CosmoDycore(CMakePackage):
             with working_dir(prefix + '/tests/unittests'):
                 run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
                 run_unittests()
+            with working_dir(prefix + '/tests/unittests/gcl_fortran'):
+                run_unitests_gcl_bindings = Executable('srun -n 4 -p normal --gres=gpu:4 ./unittests_gcl_bindings')
+                run_unitests_gcl_bindings()
+            with working_dir(prefix + '/tests/regression'):
+                testlist=['cosmo1_cp_test1', 'cosmo1_test3', 'cosmo1_test3_all_off', 'cosmo1_test3_coldpool_uv', 'cosmo1_test3_non_default', 'cosmo1_test3_vdiffm1', 'cosmo7_test_3', 'cosmo7_test_namelist_irunge_kutta2', 'cosmoe_test_sppt', 'cosmoe_test_sppt_coldpools', 'cosmoe_test_sppt_bechtold']
+                for test in testlist:
+                    run_regression_test = Executable('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p /scratch/jenkins/data/cosmo/' + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
+                    run_regression_test()
+                     
 
 
