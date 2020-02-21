@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [pgi@19.9, pgi@19.9-gcc, gcc]
+    compiler: [pgi@19.9, gcc@8.3.0, gcc@8.3.0-pgi]
   cmake:
     modules:
       cmake@3.14.5: cmake/3.14.5
@@ -80,6 +80,7 @@ packages:
     variants: cuda_arch=sm_70
     compiler: [gcc]
   cosmo:
+    variants: slave=tsa
     version: [master]
-    compiler: [pgi]
+    compiler: [pgi@19.9, gcc@8.3.0]
 

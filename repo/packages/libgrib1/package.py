@@ -36,11 +36,17 @@ class Libgrib1(MakefilePackage):
     version('master', branch='master')
     version('2019-11-22', commit='0ef8d36734609170459a536329dddcad0d930675')
 
+    depends_on('mpi')
+
 
     def setup_environment(self, spack_env, run_env):
         spack_env.set('LIBNAME', 'grib1')
 
     def build(self, spec, prefix):
+        env['CC'] = spec['mpi'].mpicc
+        env['CXX'] = spec['mpi'].mpicxx
+        env['F77'] = spec['mpi'].mpif77
+        env['FC'] = spec['mpi'].mpifc
         with working_dir(self.build_directory):
             MakeFileName = 'Makefile'
             if self.spec.architecture.target == 'skylake_avx512':
