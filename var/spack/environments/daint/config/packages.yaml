@@ -30,6 +30,7 @@ packages:
         paths:
              bzip2@1.0.6: /usr
     cosmo:
+      variants: slave=daint
       version: [daint]
       compiler: [pgi]
     gridtools:
