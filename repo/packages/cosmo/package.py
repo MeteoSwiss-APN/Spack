@@ -26,11 +26,11 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('cuda')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi +build_tests', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi real_type=float', when='real_type=float +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi real_type=double', when='real_type=double +cppdycore')
+    depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
+    depends_on('cosmo-dycore%gcc cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
+    depends_on('cosmo-dycore%gcc cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
+    depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
+    depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0%gcc', when='+serialize')
     depends_on('mpi')
     depends_on('libgrib1')
@@ -133,7 +133,7 @@ class Cosmo(MakefilePackage):
               install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
 
     @run_after('install')
-    #@on_package_attributes(run_tests=True)
+    @on_package_attributes(run_tests=True)
     def test(self):
         with working_dir('cosmo/test'):
             install_tree('testsuite', prefix.testsuite)
