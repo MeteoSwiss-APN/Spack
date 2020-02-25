@@ -26,11 +26,11 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('cuda')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi +build_tests', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi real_type=float', when='real_type=float +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-pgi real_type=double', when='real_type=double +cppdycore')
+    depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
+    depends_on('cosmo-dycore%gcc cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
+    depends_on('cosmo-dycore%gcc cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
+    depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
+    depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0%gcc', when='+serialize')
     depends_on('mpi')
     depends_on('libgrib1')
@@ -47,7 +47,7 @@ class Cosmo(MakefilePackage):
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
-
+    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
 
 
     build_directory = 'cosmo/ACC'
@@ -86,13 +86,21 @@ class Cosmo(MakefilePackage):
         return build
 
     def edit(self, spec, prefix):
+        env['CC'] = spec['mpi'].mpicc
+        env['CXX'] = spec['mpi'].mpicxx
+        env['F77'] = spec['mpi'].mpif77
+        env['FC'] = spec['mpi'].mpifc
         if self.spec.variants['cosmo_target'].value == 'gpu':
           env['BOOST_ROOT'] = spec['boost'].prefix
         if '+cppdycore' in self.spec:
+          env['GRIB1_DIR'] = spec['libgrib1'].prefix
           env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
+          env['DYCOREGT'] = spec['cosmo-dycore'].prefix
           env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
+          env['JASPER_DIR'] = spec['jasper'].prefix
         if '+serialize' in self.spec:
           env['SERIALBOX_DIR'] = spec['serialbox'].prefix
+          env['SERIALBOX_FORTRAN_LIBRARIES'] = spec['serialbox'].prefix + '/lib'
         # sets CLAW paths if variant +claw
         if '+claw' in self.spec:
             env['CLAWDIR'] = '{0}'.format(spec['claw'].prefix) 
@@ -100,7 +108,6 @@ class Cosmo(MakefilePackage):
             env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/' 
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            makefile.filter('INSTALL_PREFIX=', 'INSTALL_PREFIX={0}'.format(prefix))
             OptionsFileName='Options'
             if self.spec.architecture.target == 'skylake_avx512':
                 OptionsFileName += '.tsa'
@@ -112,51 +119,42 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
-            if self.spec.variants['cosmo_target'].value == 'gpu':
-                OptionsFileName += '.gpu'
-                optionsfilter = FileFilter('Options.lib.gpu')
-            else:
-                OptionsFileName += '.cpu'
-                optionsfilter = FileFilter('Options.lib.cpu')
-            makefile.filter('/Options', '/' + OptionsFileName)
-            
-            optionsfilter.filter('GRIBAPII =.*',  'GRIBAPII = -I{0}/include'.format(spec['cosmo-grib-api'].prefix))
-            optionsfilter.filter('GRIBAPIL =.*',  'GRIBAPIL = -L{0}/lib -lgrib_api_f90 -lgrib_api -L{1}/libjasper/lib -ljasper'.format(spec['cosmo-grib-api'].prefix, spec['jasper'].prefix))
-            if self.compiler.name == 'gcc':
-              optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1_gnu'.format(spec['libgrib1'].prefix))
-            else:
-              optionsfilter.filter('GRIBDWDL =.*',  'GRIBDWDL = -L{0} -lgrib1_{1}'.format(spec['libgrib1'].prefix, self.compiler.name))
-            # on tsa netcdf path is not included by the wrapper
+            OptionsFileName += '.' + spec.variants['cosmo_target'].value
+            optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
             if self.spec.architecture.target == 'skylake_avx512':
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
             if self.spec.architecture.target == 'haswell':
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
-
-            if '+cppdycore' in spec:
-                optionsfilter.filter('GRIDTOOLSL =.*',  'GRIDTOOLSL = -L{0}/lib -lgcl'.format(spec['gridtools'].prefix))
-                optionsfilter.filter('GRIDTOOLSI =.*',  'GRIDTOOLSI = -I{0}/include/gridtools'.format(spec['gridtools'].prefix))
-                if spec.variants['real_type'].value == 'float':
-                    optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_float -ldycore_base_bindings_float'))
-                else:
-                    optionsfilter.filter('DYCOREGTL =.*',  'DYCOREGTL = -L{0}/lib {1} -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings'.format(spec['cosmo-dycore'].prefix, '-ldycore_bindings_double -ldycore_base_bindings_double'))
-                optionsfilter.filter('DYCOREGTI =.*',  'DYCOREGTI = -I{0}'.format(spec['cosmo-dycore'].prefix))
-
-            optionsfilter.filter('MPII     =.*',  'MPII     = -I{0}/include'.format(spec['mpi'].prefix))
-            if self.spec['mpi'].name == 'openmpi':
-                optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpi -lmpi_cxx'.format(spec['mpi'].prefix))
-            if self.spec['mpi'].name == 'mpich':
-                optionsfilter.filter('MPIL     =.*',  'MPIL     = -L{0}/lib -lmpich -lmpichcxx'.format(spec['mpi'].prefix))
-
-            if '+serialize' in spec:
-                optionsfilter.filter('SERIALBOXI =.*',  'SERIALBOXI = -I{0}/include/'.format(spec['serialbox'].prefix))
-                optionsfilter.filter('SERIALBOXL =.*',  'SERIALBOXL = {0}/lib/libSerialboxFortran.a {0}/lib/libSerialboxC.a -lstdc++fs -lpthread {0}/lib/libSerialboxCore.a -lstdc++'.format(spec['serialbox'].prefix))
+            makefile.filter('/Options', '/' + OptionsFileName)
+            makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
 
     def install(self, spec, prefix):
-        with working_dir(self.build_directory):
+      with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
-              install('cosmo_serialize', prefix.bin)
+              install('cosmo_' + self.spec.variants['cosmo_target'].value + '_serialize', prefix.bin)
             else:
-              install('cosmo', prefix.bin)
+              install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
+
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def test(self):
+        with working_dir('cosmo/test'):
+            install_tree('testsuite', prefix.testsuite)
+        with working_dir(self.build_directory):
+            install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.testsuite)
+        with working_dir(prefix.testsuite + '/data'):
+            get_test_data = Executable('./get_data.sh')
+            get_test_data()
+        with working_dir(prefix.testsuite):
+            env['ASYNCIO'] = 'ON'
+            if self.spec.variants['cosmo_target'].value == 'gpu':
+                env['TARGET'] = 'GPU'
+            else:
+                env['TARGET'] = 'CPU'
+            if '~cppdycore' in self.spec:
+                env['JENKINS_NO_DYCORE'] = 'ON'
+            run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
+            run_testsuite()

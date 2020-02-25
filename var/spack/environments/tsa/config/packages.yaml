@@ -22,22 +22,20 @@ packages:
     modules: {}
     compiler: []
   cuda:
-    modules:
-      cuda@10.1.243%pgi: PrgEnv-pgi/19.9
+    paths:
+      cuda@10.1.243%pgi: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/CUDA/10.1.243/bin
       cuda@10.1.243%gcc: PrgEnv-gnu/19.2
     buildable: true
     version: []
     target: []
     providers: {}
-    paths: {}
   openmpi:
-    paths:
-      openmpi@4.0.2%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/OpenMPI/4.0.2-PGI-19.9-GCC-8.3.0-cuda-10.1
-      openmpi@4.0.2%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/OpenMPI/4.0.2-gcccuda-2019b-cuda-10.1
-  netcdf-fortran:
     modules:
-      netcdf-fortran@4.4.5%pgi: netcdf-fortran/4.4.5-pgi-19.9-gcc-8.3.0
+      openmpi@4.0.2%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/openmpi/4.0.2-pgi-19.9-gcc-8.3.0-cuda-10.1
+      openmpi@4.0.2%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/modules/all/openmpi/4.0.2-gcccuda-2019b-cuda-10.1
+  netcdf-fortran:
     paths:
+      netcdf-fortran@4.4.5%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0/
       netcdf-fortran@4.4.5%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b
   netcdf-c:
     paths:
