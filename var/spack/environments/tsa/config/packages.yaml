@@ -24,12 +24,12 @@ packages:
   cuda:
     modules:
       cuda@10.1.243%pgi: PrgEnv-pgi/19.9
-      cuda@10.1.243%gcc: PrgEnv-gnu/19.2
+    paths:
+      cuda@10.1.243%gcc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/CUDA/10.1.243/bin
     buildable: true
     version: []
     target: []
     providers: {}
-    paths: {}
   openmpi:
     paths:
       openmpi@4.0.2%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/OpenMPI/4.0.2-PGI-19.9-GCC-8.3.0-cuda-10.1

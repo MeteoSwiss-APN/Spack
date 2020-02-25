@@ -44,7 +44,7 @@ class CosmoDycore(CMakePackage):
     depends_on('gridtools@1.1.3 cosmo_target=gpu', when='cosmo_target=gpu')
     depends_on('gridtools@1.1.3 cosmo_target=cpu', when='cosmo_target=cpu')
     depends_on('boost@1.67.0')
-    depends_on('serialbox@2.6.0%gcc', when='+build_tests')
+    depends_on('serialbox@2.6.0', when='+build_tests')
     depends_on('mpi')
 
     root_cmakelists_dir='dycore'
