@@ -24,5 +24,19 @@ compilers::
       cxx: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/g++
       f77: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
       fc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
+    spec: gcc@8.3.0-nomod
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    - PrgEnv-gnu/19.2
+    operating_system: rhel7
+    paths:
+      cc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gcc
+      cxx: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/g++
+      f77: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
+      fc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
     spec: gcc@8.3.0
     target: any
