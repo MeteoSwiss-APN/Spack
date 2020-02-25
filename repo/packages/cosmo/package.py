@@ -26,12 +26,12 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('cuda')
-    depends_on('cosmo-dycore%gcc@8.3.0-nomod +build_tests', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc@8.3.0-nomod cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-nomod cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-nomod real_type=float', when='real_type=float +cppdycore')
-    depends_on('cosmo-dycore%gcc@8.3.0-nomod real_type=double', when='real_type=double +cppdycore')
-    depends_on('serialbox@2.6.0%gcc@8.3.0-nomod', when='+serialize')
+    depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
+    depends_on('cosmo-dycore%gcc cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
+    depends_on('cosmo-dycore%gcc cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
+    depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
+    depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
+    depends_on('serialbox@2.6.0%gcc', when='+serialize')
     depends_on('mpi')
     depends_on('libgrib1')
     depends_on('cosmo-grib-api')
@@ -120,7 +120,13 @@ class Cosmo(MakefilePackage):
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
-
+            optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
+            if self.spec.architecture.target == 'skylake_avx512':
+                optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
+                optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
+            if self.spec.architecture.target == 'haswell':
+                optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
+                optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
             makefile.filter('/Options', '/' + OptionsFileName)
             makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
 
