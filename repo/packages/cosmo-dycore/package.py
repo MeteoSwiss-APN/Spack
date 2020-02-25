@@ -46,6 +46,7 @@ class CosmoDycore(CMakePackage):
     depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0', when='+build_tests')
     depends_on('mpi')
+    depends_on('slurm')
 
     root_cmakelists_dir='dycore'
     
