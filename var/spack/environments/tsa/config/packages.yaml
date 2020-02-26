@@ -10,17 +10,11 @@ packages:
     providers: {}
     compiler: []
     paths: {}
-  boost:
-    paths:
-      boost@1.71.0: /project/c14/install/arolla/boost/boost_1_71_0/
-      boost@1.67.0: /project/c14/install/arolla/boost/boost_1_67_0/
-      boost@1.64.0: /project/c14/install/arolla/boost/boost_1_64_0/
-    buildable: true
-    version: []
-    target: []
-    providers: {}
-    modules: {}
-    compiler: []
+#  boost:
+#    paths:
+#      boost@1.71.0: /project/c14/install/arolla/boost/boost_1_71_0/
+#      boost@1.67.0: /project/c14/install/arolla/boost/boost_1_67_0/
+#      boost@1.64.0: /project/c14/install/arolla/boost/boost_1_64_0/
   cuda:
     paths:
       cuda@10.1.243%pgi: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/CUDA/10.1.243/bin
