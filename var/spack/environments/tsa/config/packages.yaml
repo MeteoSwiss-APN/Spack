@@ -53,6 +53,9 @@ packages:
   bison:
     paths:
       bison@3.0.4: /usr
+  bzip2:
+    paths:
+      bzip2@1.0.6: /usr
   ncurses:
     paths:
       ncurses@6.1: /usr
