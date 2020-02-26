@@ -6,7 +6,7 @@ modules:
       autoload: 'direct'
     naming_scheme: '${PACKAGE}/${VERSION}'
     hash_length: 0
-    blacklist: ['cuda', 'cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses']
+    blacklist: ['cuda', 'cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses', 'netcdf-c', 'netcdf-fortran', 'perl', 'openmpi', 'libjpeg']
     boost:
       environment:
         set:
