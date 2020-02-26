@@ -26,7 +26,7 @@ class CosmoGribApi(AutotoolsPackage):
     depends_on('libtool')
     depends_on('jasper@1.900.1')
     
-    resource(name='libgrib-api', git='git@github.com:C2SM-RCM/libgrib-api-cosmo-resources.git', destination='.')
+    force_autoreconf = True
 
     def configure_args(self):
         args = [
@@ -42,10 +42,3 @@ class CosmoGribApi(AutotoolsPackage):
 
         return args                                   
 
-    def install(self, spec, prefix):
-        make('install')
-        with working_dir('libgrib-api-cosmo-resources'):
-          mkdir(prefix.cosmo_definitions)
-          install_tree('definitions', prefix.cosmo_definitions)
-          mkdir(prefix.cosmo_samples)
-          install_tree('samples', prefix.cosmo_samples)
