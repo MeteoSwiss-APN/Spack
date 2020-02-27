@@ -4,11 +4,10 @@
 # configuration settings.
 spack:
   # add package specs to the `specs` list
-  specs: [cosmo%pgi, libgrib1%pgi, cosmo-dycore]
+  specs: []
   view: true
   include:
   - ./config/compilers.yaml
   - ./config/packages.yaml
   - ./config/modules.yaml
   - ./config/config.yaml
-  - ./config/upstreams.yaml

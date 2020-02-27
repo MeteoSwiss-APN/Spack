@@ -59,6 +59,9 @@ packages:
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04
+  tail:
+    path:
+      tail@8.22: /usr
   cosmo-dycore:
     variants: cuda_arch=sm_70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
     compiler: [gcc]

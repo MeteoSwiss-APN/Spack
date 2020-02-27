@@ -26,6 +26,7 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
+    depends_on('tail', type='run')
     depends_on('cuda', type=('build', 'run'))
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
     depends_on('cosmo-dycore%gcc cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
