@@ -111,11 +111,7 @@ class Cosmo(MakefilePackage):
             env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/' 
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            OptionsFileName='Options'
-            if self.spec.architecture.target == 'skylake_avx512':
-                OptionsFileName += '.tsa'
-            if self.spec.architecture.target == 'haswell':
-                OptionsFileName += '.daint'
+            OptionsFileName= 'Options.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
@@ -124,10 +120,10 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
-            if self.spec.architecture.target == 'skylake_avx512':
+            if self.spec.variants['slave'].value == 'tsa':
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
-            if self.spec.architecture.target == 'haswell':
+            else:
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
             makefile.filter('/Options', '/' + OptionsFileName)

@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [pgi@19.9, gcc@8.3.0, gcc@8.3.0-pgi]
+    compiler: [pgi@19.9, gcc@8.3.0]
   cmake:
     modules:
       cmake@3.14.5: cmake/3.14.5
@@ -10,17 +10,6 @@ packages:
     providers: {}
     compiler: []
     paths: {}
-  boost:
-    paths:
-      boost@1.71.0: /project/c14/install/arolla/boost/boost_1_71_0/
-      boost@1.67.0: /project/c14/install/arolla/boost/boost_1_67_0/
-      boost@1.64.0: /project/c14/install/arolla/boost/boost_1_64_0/
-    buildable: true
-    version: []
-    target: []
-    providers: {}
-    modules: {}
-    compiler: []
   cuda:
     modules:
       cuda@10.1.243: cuda/10.1.243
@@ -71,7 +60,7 @@ packages:
     modules:
       slurm@19.05.04: slurm/19.05.04
   cosmo-dycore:
-    variants: cuda_arch=sm_70 data_path=/scratch/jenkins/data/cosmo/
+    variants: cuda_arch=sm_70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
     compiler: [gcc]
   gridtools:
     variants: cuda_arch=sm_70
