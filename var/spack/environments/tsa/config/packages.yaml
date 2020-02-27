@@ -22,9 +22,8 @@ packages:
     modules: {}
     compiler: []
   cuda:
-    paths:
-      cuda@10.1.243%pgi: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/CUDA/10.1.243/bin
-      cuda@10.1.243%gcc: PrgEnv-gnu/19.2
+    modules:
+      cuda@10.1.243: cuda/10.1.243
     buildable: true
     version: []
     target: []

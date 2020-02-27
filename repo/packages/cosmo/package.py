@@ -25,14 +25,15 @@ class Cosmo(MakefilePackage):
     
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
-    depends_on('cuda')
+    depends_on('slurm', type='run')
+    depends_on('cuda', type=('build', 'run'))
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
     depends_on('cosmo-dycore%gcc cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
     depends_on('cosmo-dycore%gcc cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0%gcc', when='+serialize')
-    depends_on('mpi')
+    depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
     depends_on('cosmo-grib-api')
     depends_on('perl@5.16.3:')
@@ -58,6 +59,8 @@ class Cosmo(MakefilePackage):
         grib_samples_path = self.spec['cosmo-grib-api'].prefix + '/cosmo_samples'
         spack_env.set('GRIB_SAMPLES_PATH', grib_samples_path)
         spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
+        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
+        spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
 
     @property
     def build_targets(self):
