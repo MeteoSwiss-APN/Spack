@@ -157,3 +157,5 @@ class Cosmo(MakefilePackage):
                 env['JENKINS_NO_DYCORE'] = 'ON'
             run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
             run_testsuite()
+            tail_testsuite = Executable('tail -f testsuite.out')
+            tail_testsuite()
