@@ -37,7 +37,7 @@ packages:
       variants: cuda_arch=sm_60
       compiler: [gcc]
     cosmo-dycore:
-      variants: cuda_arch=sm_60 data_path=/scratch/snx3000/jenkins/data/cosmo/
+      variants: slave=daint cuda_arch=sm_60 data_path=/scratch/snx3000/wbenjami/cosmo-serialized-data/
       compiler: [gcc]
     cmake:
         paths:
@@ -202,6 +202,9 @@ packages:
     readline:
         paths:
             readline@7.0: /usr
+    slurm:
+      modules:
+        slurm@19.05.3-2: slurm/19.05.3-2
     tar:
         paths:
              tar@1.30.0: /bin
