@@ -38,7 +38,7 @@ class CosmoDycore(CMakePackage):
     variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
-    #variant('test_command', default='srun', description='Slurm command for the test execution', multi=False)
+    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('data_path', default='.', description='Serialization data path', multi=False)
     
     depends_on('gridtools@1.1.3 cosmo_target=gpu', when='cosmo_target=gpu')
@@ -106,15 +106,24 @@ class CosmoDycore(CMakePackage):
                 mkdir(prefix.tests)
                 install_tree('tests', prefix.tests)
             with working_dir(prefix + '/tests/unittests'):
-                run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
+                if self.spec.variants['slave'].value == 'tsa':
+                    run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
+                if self.spec.variants['slave'].value == 'daint':
+                    run_unittests = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
                 run_unittests()
             with working_dir(prefix + '/tests/unittests/gcl_fortran'):
-                run_unitests_gcl_bindings = Executable('srun -n 4 -p normal --gres=gpu:4 ./unittests_gcl_bindings')
+                if self.spec.variants['slave'].value == 'tsa':
+                    run_unitests_gcl_bindings = Executable('srun -n 4 -p normal --gres=gpu:4 ./unittests_gcl_bindings')
+                if self.spec.variants['slave'].value == 'daint':
+                    run_unitests_gcl_bindings = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 4 ./unittests_gcl_bindings')
                 run_unitests_gcl_bindings()
             with working_dir(prefix + '/tests/regression'):
                 testlist=['cosmo1_cp_test1', 'cosmo1_test3', 'cosmo1_test3_all_off', 'cosmo1_test3_coldpool_uv', 'cosmo1_test3_non_default', 'cosmo1_test3_vdiffm1', 'cosmo7_test_3', 'cosmo7_test_namelist_irunge_kutta2', 'cosmoe_test_sppt', 'cosmoe_test_sppt_coldpools', 'cosmoe_test_sppt_bechtold']
                 for test in testlist:
-                    run_regression_test = Executable('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
+                    if self.spec.variants['slave'].value == 'tsa':
+                        run_regression_test = Executable('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
+                    if self.spec.variants['slave'].value == 'daint':
+                        run_regression_test = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
                     run_regression_test()
                      
 
