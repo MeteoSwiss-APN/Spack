@@ -35,9 +35,6 @@ packages:
   m4:
     paths: 
       m4@1.4.16: /usr
-  libtool:
-    paths:
-      libtool: /usr
   automake:
     paths:
       automake@1.13.4: /usr
@@ -53,9 +50,12 @@ packages:
   libxml2:
     paths:
       libxml2@2.9.9: /usr
-  libjpeg:
+  libtool:
     paths:
-      libjpeg: /usr
+      libtool@2.4.2: /usr
+  jasper:
+    paths:
+      jasper@1.900.1: /usr
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04
