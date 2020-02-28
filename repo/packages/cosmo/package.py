@@ -26,7 +26,6 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
-    depends_on('tail', type='run')
     depends_on('cuda', type=('build', 'run'))
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
     depends_on('cosmo-dycore%gcc cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
@@ -158,5 +157,3 @@ class Cosmo(MakefilePackage):
                 env['JENKINS_NO_DYCORE'] = 'ON'
             run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
             run_testsuite()
-            tail_testsuite = Executable('tail -f testsuite.out')
-            tail_testsuite()
