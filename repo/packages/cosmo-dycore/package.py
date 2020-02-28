@@ -52,6 +52,9 @@ class CosmoDycore(CMakePackage):
     root_cmakelists_dir='dycore'
     
     def setup_environment(self, spack_env, run_env):
+        if self.spec.variants['slave'].value == 'daint':
+            spack_env.set('MPICH_RDMA_ENABLED_CUDA', '1')
+            spack_env.set('MPICH_G2G_PIPELINE', '64')
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
         spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
         spack_env.set('GRIDTOOLS_ROOT', self.spec['gridtools'].prefix)
