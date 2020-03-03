@@ -3,12 +3,12 @@
 # It describes a set of packages to be installed, along with
 # configuration settings.
 spack:
-  # add package specs to the `specs` list
-  specs: []
-  view: true
   include:
   - ./config/compilers.yaml
   - ./config/packages.yaml
   - ./config/modules.yaml
   - ./config/config.yaml
   - ./config/upstreams.yaml
+  specs:
+  - cosmo%pgi cosmo_target=cpu ~cppdycore+serialize
+  - cosmo%gcc cosmo_target=cpu ~cppdycore+serialize
