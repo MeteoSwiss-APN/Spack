@@ -55,11 +55,22 @@ class Cosmo(MakefilePackage):
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
-        grib_definition_path = self.spec['cosmo-grib-api'].prefix + '/share/grib_api/definitions:' + self.spec['cosmo-grib-api'].prefix + '/cosmo_definitions'
-        spack_env.set('GRIB_DEFINITION_PATH', grib_definition_path)
-        grib_samples_path = self.spec['cosmo-grib-api'].prefix + '/cosmo_samples'
-        spack_env.set('GRIB_SAMPLES_PATH', grib_samples_path)
         spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
+        spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix)
+        spack_env.set('BOOST_ROOT',  self.spec['boost'].prefix)
+        spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
+        if '+cppdycore' in self.spec:
+            spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
+            spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
+            spack_env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
+        if '+serialize' in self.spec:
+          spack_env.set('SERIALBOX_DIR', self.spec['serialbox'].prefix)
+          spack_env.set('SERIALBOX_FORTRAN_LIBRARIES', self.spec['serialbox'].prefix + '/lib/libSerialboxFortran.a ' +  self.spec['serialbox'].prefix + '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix + '/lib/libSerialboxCore.a -lstdc++fs -lpthread')
+        # sets CLAW paths if variant +claw
+        if '+claw' in self.spec:
+            env['CLAWDIR'] = '{0}'.format(spec['claw'].prefix) 
+            env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
+            env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/'                                       
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
         spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
 
@@ -94,22 +105,6 @@ class Cosmo(MakefilePackage):
         env['CXX'] = spec['mpi'].mpicxx
         env['F77'] = spec['mpi'].mpif77
         env['FC'] = spec['mpi'].mpifc
-        if self.spec.variants['cosmo_target'].value == 'gpu':
-          env['BOOST_ROOT'] = spec['boost'].prefix
-        if '+cppdycore' in self.spec:
-          env['GRIB1_DIR'] = spec['libgrib1'].prefix
-          env['GRIDTOOLS_DIR'] = spec['gridtools'].prefix
-          env['DYCOREGT'] = spec['cosmo-dycore'].prefix
-          env['DYCOREGT_DIR'] = spec['cosmo-dycore'].prefix
-          env['JASPER_DIR'] = spec['jasper'].prefix
-        if '+serialize' in self.spec:
-          env['SERIALBOX_DIR'] = spec['serialbox'].prefix
-          env['SERIALBOX_FORTRAN_LIBRARIES'] = spec['serialbox'].prefix + '/lib'
-        # sets CLAW paths if variant +claw
-        if '+claw' in self.spec:
-            env['CLAWDIR'] = '{0}'.format(spec['claw'].prefix) 
-            env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
-            env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/' 
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
             OptionsFileName= 'Options.' + self.spec.variants['slave'].value
@@ -128,13 +123,17 @@ class Cosmo(MakefilePackage):
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
             makefile.filter('/Options', '/' + OptionsFileName)
-            makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
+            if '~serialize' in spec:
+              makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
 
     def install(self, spec, prefix):
       with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
-              install('cosmo_' + self.spec.variants['cosmo_target'].value + '_serialize', prefix.bin)
+              mkdir(prefix.serialize)
+              #with working_dir(self.build_directory + '/test'):
+                #install_tree('serialize', prefix.serialize)
+              install('cosmo_serialize', prefix.bin)
             else:
               install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
 
