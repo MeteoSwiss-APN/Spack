@@ -9,6 +9,4 @@ spack:
   - ./config/modules.yaml
   - ./config/config.yaml
   - ./config/upstreams.yaml
-  specs:
-  - cosmo%pgi cosmo_target=cpu ~cppdycore+serialize
-  - cosmo%gcc cosmo_target=cpu ~cppdycore+serialize
+  specs: []
