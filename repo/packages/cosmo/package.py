@@ -73,7 +73,10 @@ class Cosmo(MakefilePackage):
             env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
             env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/'                                       
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
+        if '+cppdycore' in self.spec and self.spec.variants['cosmo_target'].value == 'gpu':
+          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
+        else:
+          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
 
     @property
     def build_targets(self):
@@ -128,33 +131,37 @@ class Cosmo(MakefilePackage):
               makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
 
     def install(self, spec, prefix):
-      with working_dir(self.build_directory):
+        mkdir(prefix.cosmo)
+        mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
+        install_tree('cosmo', prefix.cosmo)        
+        with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
-              mkdir(prefix.serialize)
-              #with working_dir(self.build_directory + '/test'):
-                #install_tree('serialize', prefix.serialize)
-              install('cosmo_serialize', prefix.bin)
+              install('cosmo_serialize', prefix.bin)            
             else:
               install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
+              install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.cosmo + '/test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        with working_dir('cosmo/test'):
-            install_tree('testsuite', prefix.testsuite)
-        with working_dir(self.build_directory):
-            install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.testsuite)
-        with working_dir(prefix.testsuite + '/data'):
+        with working_dir(prefix.cosmo + '/test/testsuite/data'):
             get_test_data = Executable('./get_data.sh')
             get_test_data()
-        with working_dir(prefix.testsuite):
-            env['ASYNCIO'] = 'ON'
-            if self.spec.variants['cosmo_target'].value == 'gpu':
-                env['TARGET'] = 'GPU'
-            else:
-                env['TARGET'] = 'CPU'
-            if '~cppdycore' in self.spec:
-                env['JENKINS_NO_DYCORE'] = 'ON'
-            run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
-            run_testsuite()
+        if '~serialize' in self.spec:
+            with working_dir(prefix.cosmo + '/test/testsuite'):
+                env['ASYNCIO'] = 'ON'
+                if self.spec.variants['cosmo_target'].value == 'gpu':
+                    env['TARGET'] = 'GPU'
+                else:
+                    env['TARGET'] = 'CPU'
+                if '~cppdycore' in self.spec:
+                    env['JENKINS_NO_DYCORE'] = 'ON'
+                run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
+                run_testsuite()
+        if '+serialize' in self.spec:
+            with working_dir(prefix.cosmo + '/ACC'):
+                get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun')
+                get_serialization_data()
+            with working_dir(prefix.cosmo + '/ACC/test/serialize'):
+                copy('data', prefix.data + '/' + self.spec.variants['real_type'].value) 
