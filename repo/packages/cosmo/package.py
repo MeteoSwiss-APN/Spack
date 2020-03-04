@@ -164,4 +164,4 @@ class Cosmo(MakefilePackage):
                 get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun')
                 get_serialization_data()
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
-                copy('data', prefix.data + '/' + self.spec.variants['real_type'].value) 
+                copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value) 
