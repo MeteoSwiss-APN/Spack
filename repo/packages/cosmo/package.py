@@ -57,8 +57,9 @@ class Cosmo(MakefilePackage):
     def setup_environment(self, spack_env, run_env):
         spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
         spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix)
-        spack_env.set('BOOST_ROOT',  self.spec['boost'].prefix)
         spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
+        if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
+            spack_env.set('BOOST_ROOT',  self.spec['boost'].prefix)
         if '+cppdycore' in self.spec:
             spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
             spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
