@@ -17,7 +17,6 @@ class Cosmo(MakefilePackage):
     maintainers = ['elsagermann']
 
     version('master', branch='master')
-    version('daint', branch='daint')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('5.05a', commit='ef85dacc25cbadec42b0a7b77633c4cfe2aa9fb9')
     version('5.05',  commit='5ade2c96776db00ea945ef18bfeacbeb7835277a')
