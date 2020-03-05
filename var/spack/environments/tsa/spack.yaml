@@ -8,5 +8,4 @@ spack:
   - ./config/packages.yaml
   - ./config/modules.yaml
   - ./config/config.yaml
-  - ./config/upstreams.yaml
   specs: []
