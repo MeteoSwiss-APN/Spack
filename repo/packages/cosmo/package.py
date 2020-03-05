@@ -132,15 +132,16 @@ class Cosmo(MakefilePackage):
 
     def install(self, spec, prefix):
         mkdir(prefix.cosmo)
-        mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
+        if '+serialize' in self.spec:
+            mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
         install_tree('cosmo', prefix.cosmo)        
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
-              install('cosmo_serialize', prefix.bin)            
+                install('cosmo_serialize', prefix.bin)            
             else:
-              install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
-              install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.cosmo + '/test/testsuite')
+                install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
+                install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.cosmo + '/test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
